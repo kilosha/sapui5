@@ -1,0 +1,187 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core" 
+    xmlns:wt="ns.bookshop.control">
+	<Dialog
+		id="CreateOrderDialog"
+		title="{i18n>createOrderFormTitle}"
+		afterClose="onAfterCloseCreateOrderDialog">
+		<f:SimpleForm
+			maxContainerCols="1"
+			layout="ResponsiveGridLayout"
+			labelSpanL="12"
+			labelSpanM="12"
+			emptySpanL="0"
+			emptySpanM="0"
+			columnsL="1"
+            columnsM="1">
+			<f:content>
+				<Label 
+					text="{i18n>createOrderCustomerNameInput}" 
+					labelFor="customerName"/>
+				<Input 	
+					placeholder="{i18n>createOrderCustomerNamePlaceholder}"	 
+                    value="{
+                        path : 'customerName',
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            minLength: 1,
+                            search: '[A-Za-z]+'
+                        }
+                    }"
+					id="customerName" 
+                    required="true"
+                    fieldGroupIds="createOrder"
+                    liveChange= "onInputChange"
+                />
+
+                <Label 
+					text="{i18n>createOrderPhoneNumberInput}" 
+                    labelFor="phoneNumber"/>
+                <wt:CustomInput 
+                    id="phoneNumber"
+                    placeholder="{i18n>createOrderPhoneNumberPlaceholder}" 
+                    value="{
+                        path : 'phoneNumber',
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            minLength: 13,
+                            maxLength: 13
+                        }
+                    }"
+                    required="true"
+                    endButtonPress="handleResponsivePopoverPress"
+                    fieldGroupIds="createOrder"
+                    change="onCustomInputChange"
+                />
+
+                <Label 
+					text="{i18n>createOrderCustomerCityInput}" 
+					labelFor="customerCity"/>
+				<Input 	
+					placeholder="{i18n>createOrderCustomerCityPlaceholder}"	 
+                    value="{
+                        path : 'customerCity',
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            minLength: 1,
+                            search: '[A-Za-z]+'
+                        }
+                    }"
+					id="customerCity" 
+                    required="true"
+                    fieldGroupIds="createOrder"
+                    liveChange= "onInputChange"
+                />
+
+                <Label 
+					text="{i18n>createOrderCustomerAddressInput}" 
+                    labelFor="customerAddress"
+                    required="true"/>
+                <HBox 
+                    justifyContent="SpaceAround">
+                    <Input 	
+                        placeholder="{i18n>createOrderCustomerStreetPlaceholder}"	 
+                        value="{
+                            path : 'worklistView>/customerAddress/street',
+                            type : 'sap.ui.model.type.String',
+                            constraints : {
+                                minLength: 1,
+                                search: '[A-Za-z]+'
+                            }
+                        }"
+                        id="customerStreet" 
+                        required="true"
+                        fieldGroupIds="createOrder"
+                        liveChange= "onInputChange"
+                    />
+                    <Input 	
+                        placeholder="{i18n>createOrderCustomerHouseNumberPlaceholder}"	 
+                        value="{
+                            path : 'worklistView>/customerAddress/houseNumber',
+                            type : 'sap.ui.model.type.String',
+                            constraints : {
+                                minLength: 1,
+                                search: '^[1-9]+'
+                            }
+                        }"
+                        id="customerHouseNumber" 
+                        required="true"
+                        fieldGroupIds="createOrder"
+                        liveChange= "onInputChange"
+                    />
+                    <Input 	
+                        placeholder="{i18n>createOrderCustomerApartmentNumberPlaceholder}"	 
+                        value="{
+                            path : 'worklistView>/customerAddress/apartmentNumber',
+                            type : 'sap.ui.model.type.String',
+                            constraints : {
+                                minLength: 1,
+                                search: '^[1-9]+'
+                            }
+                        }"
+                        id="customerApartmentNumber" 
+                        required="true"
+                        fieldGroupIds="createOrder"
+                        liveChange= "onInputChange"
+                    />
+                </HBox>
+
+                <Label 
+					text="{i18n>createOrderDeliveryDateInput}"
+					labelFor="deliveryDate"/>
+                <DatePicker
+                    id="deliveryDate"
+                    required="true"
+                    placeholder="{i18n>createOrderDeliveryDatePlaceholder}"
+                    value="{deliveryDate}"
+                    valueFormat="yyyy-MM-dd"
+                    fieldGroupIds="createOrder"
+                    change="onDatePickerValueChange"/>
+
+                <Label 
+					text="{i18n>createOrderPaymentMethodInput}" 
+					labelFor="paymentMethod"/>
+				<Select
+					id="paymentMethod"
+					required="true"
+                    selectedKey="{paymentMethod}"
+					forceSelection="false"
+					items="{
+						path: 'worklistView>/paymentMethods'
+					}">
+					<core:Item key="{worklistView>type}" text="{worklistView>type}"/>
+                </Select>
+
+                <Label text="Order list"/>
+                <List mode="Delete"
+                    items="{worklistView>/booksInOrder}"
+                    delete="onDeleteBookFromOrderButtonPress"
+                    headerText="Total cost: {worklistView>/totalCost} USD">
+                    <ObjectListItem
+                        title="{worklistView>title}"
+                        type="Detail"
+                        detailPress="onChangeBookInOrderAmountPress"
+                        number="{
+                            parts:[{path:'worklistView>totalPrice'},{path:'worklistView>currency'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: false}
+                        }"
+                        numberUnit="{worklistView>currency}">
+                        <ObjectAttribute text="Unit price: {worklistView>price} {worklistView>currency}"/>
+                        <ObjectAttribute text="Amount: {worklistView>amount}"/>
+                    </ObjectListItem>
+				</List>
+			</f:content>
+		</f:SimpleForm>
+		<buttons>
+			<Button 
+				text="{i18n>submitCreateOrderButton}" 
+				press="submitCreateOrderButtonPress" />
+            <Button 
+				text="{i18n>closeCreateOrderDialogButton}" 
+				press="onCancelCreateDialogButtonPress" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

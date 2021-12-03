@@ -1,0 +1,140 @@
+<core:FragmentDefinition
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" >
+		<f:SimpleForm
+            layout="ResponsiveGridLayout"
+            labelSpanXL="1"
+            labelSpanL="1"
+            labelSpanM="1"
+            emptySpanXL="0"
+            emptySpanL="0"
+            emptySpanM="0"
+            columnsXL="1"
+            columnsL="1"
+            columnsM="1"
+            validateFieldGroup="onValidateBooEditFieldGroup"
+            editable="true">
+            <f:content>
+                <Label 
+                    text="{i18n>bookAuthorNameLabel}"
+                    labelFor="bookAuthorNameEdit"
+                    vAlign="Middle"/>
+                <ActionSelect
+                    id="bookAuthorNameEdit"
+                    buttons="button2"
+                    required="true"
+                    selectedKey="{author_ID}"   
+                    items="{
+                        path: '/Authors'
+                    }">
+                    <items>
+                        <core:Item key="{ID}" text="{name}" />
+                    </items>
+                    <dependents>
+                        <Button id="button2" text="{i18n>addNewAuthorButtonPress}" press=".onAddNewAuthorButtonPress" width="inherit"/>
+                    </dependents>
+		        </ActionSelect>
+
+                <Label 
+                    text="{i18n>bookDescriptionLabel}"
+                    labelFor="bookDescriptionEdit"
+                    vAlign="Middle"/>
+                <TextArea 
+                    fieldGroupIds="editBookString" 
+                    value="{
+                        path : 'descr',
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            minLength: 1,
+                            search: '[A-Za-z]+'
+                        }
+                    }"
+                    placeholder="{i18n>createBookDescriptionInputPlaceholder}" 
+                    id="bookDescriptionEdit"
+                    visible="{objectView>/edit}"
+                    required="{objectView>/required}"
+                    growing="true"
+                    valueLiveUpdate="true"
+                    growingMaxLines="7">
+                    <layoutData>
+                        <l:GridData span="XL11 L11 M11 S11"/>
+                    </layoutData>
+                </TextArea>
+
+                <Label 
+                    text="{i18n>bookGenreLabel}"
+                    labelFor="bookGenreEdit"
+                    required="{objectView>/required}"/>
+                <Select
+                    id="bookGenreEdit"
+                    required="true"
+                    selectedKey="{genre_title}"
+                    forceSelection="false"
+                    items="{
+                        path: '/Genres',
+                        sorter: { path: 'title' }
+                    }">
+                    <core:Item key="{title}" text="{title}"/>
+                </Select>
+
+
+                <Label 
+                    text="{i18n>bookStockLabel}"
+                    labelFor="bookStockEdit"/>
+                <Input 
+                    value= "{
+                        path: 'stock',
+                        type:'sap.ui.model.type.Integer',
+                        constraints: {
+                            minimum: 1
+                        }
+                    }"
+                    placeholder="{i18n>}"
+                    id="bookStockEdit" 
+                    required="{objectView>/required}" 
+                    visible="{objectView>/edit}"
+                    fieldGroupIds="editBook"/>
+
+
+                <Label 
+                    text="{i18n>bookPriceLabel}"
+                    labelFor="bookPriceEdit"/>
+                <Input 
+                    value= "{
+                        path: 'price',
+                        type:'sap.ui.model.type.Float',
+                        formatOptions: {
+                            minIntegerDigits: '0',
+                            minFractionDigits: '2',
+                            maxFractionDigits: '2'
+                        },
+                        constraints: {
+                            minimum: '0.01'
+                        }
+                    }"
+                    description="{currency}" 
+                    fieldWidth="96%" 
+                    placeholder="{i18n>}"
+                    id="bookPriceEdit" 
+                    required="{objectView>/required}" 
+                    visible="{objectView>/edit}"
+                    fieldGroupIds="editBook"
+                    change="onPriceChangeInputValueEvent"
+                    liveChange= "onPriceChangeInputValueEvent"/>
+
+                
+                <Label 
+                    text="{i18n>bookRatingLabel}"
+                    labelFor="bookRatingEdit"
+                    required="{objectView>/required}"/>
+                <RatingIndicator 
+                    id="bookRatingEdit" 
+                    maxValue="5"
+                    value="{rating}"/>
+            </f:content>
+        </f:SimpleForm>
+</core:FragmentDefinition>

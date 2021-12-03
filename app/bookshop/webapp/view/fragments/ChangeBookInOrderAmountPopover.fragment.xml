@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:wt="ns.bookshop.control">
+	<ResponsivePopover
+		id="mySecondPopover"
+		class="sapUiResponsiveContentPadding"
+        placement="HorizontalPreferredRight" 
+        title="{worklistView>title} amount">
+		<content>
+            <StepInput
+                width="100%"
+                value="{path: 'worklistView>ID', formatter: '.formatter.bookInOrderAmountFormatter'}"
+                min="0"
+                max="{worklistView>stock}"
+                change="currentBookInOrderAmountChange"/>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

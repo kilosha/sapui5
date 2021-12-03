@@ -1,0 +1,225 @@
+<mvc:View
+	controllerName="ns.bookshop.controller.Object"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap"
+	xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form">
+    <uxap:ObjectPageLayout 
+        id="ObjectPageLayout"
+        showFooter="{objectView>/edit}" >
+
+        <uxap:headerTitle>
+            <uxap:ObjectPageDynamicHeaderTitle>
+                <uxap:breadcrumbs>
+                    <Breadcrumbs currentLocationText="{title}">
+						<Link 
+							text="{i18n>bookshopBreadcrump}"  press="onNavToBookStore"/>
+					</Breadcrumbs>
+                </uxap:breadcrumbs>
+
+                <uxap:heading>
+                    <HBox>
+                        <Title 
+                            text="{title}" 
+                            visible="{= !${objectView>/edit}}"/>
+                        <HBox
+                            visible="{objectView>/edit}"
+                            justifyContent="End"
+                            alignItems="Center">
+                            <Label 
+                                text="{i18n>bookTitleLabel}"
+                                labelFor="bookTitleEdit"
+                                vAlign="Middle"
+                                class="sapUiTinyMarginEnd"/>
+                            <Input 
+                                value="{
+                                    path : 'title',
+                                    type : 'sap.ui.model.type.String',
+                                    constraints : {
+                                        minLength: 1,
+                                        search: '[A-Za-z]+'
+                                    }
+                                }"
+                                placeholder="{i18n>}"
+                                id="bookTitleEdit" 
+                                required="{objectView>/required}"/>
+                        </HBox>
+                    </HBox>    
+                </uxap:heading>
+
+                <uxap:expandedContent>
+				    <Text text="{author/name}"/>
+				</uxap:expandedContent>
+
+				<uxap:snappedContent>
+					<Text text="{author/name}"/>
+				</uxap:snappedContent>
+
+                <uxap:snappedTitleOnMobile>
+                    <Title text="{title}" />
+                </uxap:snappedTitleOnMobile>
+
+                <uxap:actions>
+                    <Button 
+                        text="Edit" 
+                        type="Emphasized" 
+                        press="onEditBookButtonPress"
+                        visible="{= !${objectView>/edit}}"
+                        tooltip="Edit book"/>
+                    <Button 
+                        type="Transparent" 
+                        text="Delete" 
+                        press="onDeleteBookButtonPress"
+                        tooltip="Delete book"/>
+                </uxap:actions>
+
+            </uxap:ObjectPageDynamicHeaderTitle>
+        </uxap:headerTitle>
+
+        <uxap:headerContent> 
+            <f:SimpleForm
+                id="bookInfoForm"
+                editable="true"
+                layout="ResponsiveGridLayout">
+            </f:SimpleForm>
+    
+        </uxap:headerContent>
+
+        <uxap:sections>
+            <uxap:ObjectPageSection showTitle="false">
+                <uxap:ObjectPageSubSection showTitle="false">
+                    <Table
+                        id="ordersTable"
+                        width="auto"
+                        items="{
+                            path: 'orders',
+                            parameters: {expand: 'up_'}
+                        }"
+                        noDataText="{i18n>tableNoOrdersText}"
+                        growing="true"
+                        growingScrollToLoad="true"
+                        updateFinished=".onUpdateFinished"
+                        >
+
+                        <headerToolbar>
+                            <Toolbar>
+                                <Title 
+                                    id="ordersTableHeader" 
+                                    text="{objectView>/orderslistTableTitle}"/>
+                            </Toolbar>
+                        </headerToolbar>
+
+                        <columns>
+                            <Column 
+                                id="orderDeliveryDateColumn">
+                                 <Text 
+                                    text="{i18n>orderDeliveryDateColumnTitle}" 
+                                    id="orderDeliveryDateColumnTitle"/>
+                            </Column>
+                            <Column 
+                                id="orderCustomerNameColumn">
+                                <Text 
+                                    text="{i18n>orderCustomerNameColumnTitle}" 
+                                    id="orderCustomerNameColumnTitle"/>
+                            </Column>
+                            <Column 
+                                id="orderCityColumn">
+                                <Text 
+                                    text="{i18n>orderCityColumnTitle}" 
+                                    id="orderCityColumnTitle"/>
+                            </Column>
+                            <Column 
+                                id="orderAddressColumn"
+                                width="15vw">
+                                <Text 
+                                    text="{i18n>orderAddressColumnTitle}" 
+                                    id="orderAddressColumnTitle"/>
+                            </Column>
+                            <Column 
+                                id="orderPhoneNumberColumn">
+                                <Text 
+                                    text="{i18n>orderPhoneNumberColumnTitle}" 
+                                    id="orderPhoneNumberColumnTitle"/>
+                            </Column>
+                            <Column 
+                                id="orderPaymentMethodColumn">
+                                <Text 
+                                    text="{i18n>orderPaymentMethodTitle}" 
+                                    id="orderPaymentMethodColumnTitle"/>
+                            </Column>
+                            <Column 
+                                id="orderTotalCostColumn" >
+                                <Text 
+                                    text="{i18n>orderTotalCostColumnTitle}" 
+                                    id="orderTotalCostColumnTitle"/>
+                            </Column>
+                            <Column 
+                                id="orderAmountColumn"  
+                                hAlign="Right">
+                                <Text 
+                                    text="{i18n>orderAmountColumnTitle}" 
+                                    id="orderAmountColumnTitle"/>
+                            </Column>
+                        </columns>
+
+                        <items>
+                            <ColumnListItem
+                                type="Navigation"
+                                press="onBooksListItemSelect">
+                                <cells>
+                                    <Text text="{
+                                        path: 'up_/deliveryDate',
+                                        type: 'sap.ui.model.type.Date',
+                                        formatOptions: {
+                                            style: 'medium'
+                                        }
+                                    }"/>
+                                    <Text
+                                        text="{up_/customerName}"/>
+                                    <Text
+                                        text="{up_/customerCity}"/>
+                                    <Text
+                                        text="{up_/customerAddress}"/>
+                                    <Text
+                                        text="{up_/phoneNumber}"/>
+                                    <Text
+                                        text="{up_/paymentMethod}"/>
+                                    <ObjectNumber
+                                        number="{
+                                            parts:[{path:'up_/totalCost'},{path:'up_/currency'}],
+                                            type: 'sap.ui.model.type.Currency',
+                                            formatOptions: {showMeasure: false}
+                                        }"
+                                        unit="{up_/currency}" />
+                                    <Text
+                                        text="{amount}"/>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                    </Table>
+                </uxap:ObjectPageSubSection>
+            </uxap:ObjectPageSection>
+        </uxap:sections>
+
+        <uxap:footer>
+			<OverflowToolbar>
+				<ToolbarSpacer />
+                <Button 
+                    id="save" 
+                    text="Save" 
+                    type="Emphasized" 
+                    visible="{objectView>/edit}"
+                    tooltip="Save changes"
+                    press="onSaveBookEditChangesButtonPress" />
+                <Button 
+                    id="cancel" 
+                    text="Cancel" 
+                    visible="{objectView>/edit}" 
+                    tooltip="Cancel changes"
+                    press="onCancelBookEditChangesButtonPress" />
+			</OverflowToolbar>
+		</uxap:footer>
+
+	</uxap:ObjectPageLayout>
+</mvc:View>

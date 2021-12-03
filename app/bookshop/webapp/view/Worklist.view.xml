@@ -1,0 +1,268 @@
+<mvc:View
+	controllerName="ns.bookshop.controller.Worklist"
+	xmlns="sap.m"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic">
+    <semantic:SemanticPage
+		id="page"
+		headerPinnable="false"
+		toggleHeaderOnTitleClick="false"
+        showFooter="true"
+        preserveHeaderStateOnScroll="true">
+
+		<semantic:titleHeading>
+            <Title 
+                text="{i18n>worklistTitle}"
+                level="H1" />
+		</semantic:titleHeading>
+
+        <semantic:titleBreadcrumbs> 
+            <Breadcrumbs>
+                <Link 
+                    text="{i18n>bookshopBreadcrump}"/>
+            </Breadcrumbs>
+        </semantic:titleBreadcrumbs> 
+
+        <semantic:headerContent>
+            <HBox 
+                justifyContent="End"
+                alignItems="Center">
+                <Label 
+                    text="{i18n>totalOrderPriceLabel}"
+                    vAlign="Middle"
+                    design="Bold"/>
+                <Text 
+                    text="{worklistView>/totalCost} {i18n>currency}"
+                    class="sapUiTinyMarginBeginEnd"/>
+                <Button 
+                    type="Accept"
+                    text="Place an order"
+                    press="onPressPlaceAnOrderButton"
+                    ariaDescribedBy="acceptButtonDescription genericButtonDescription"
+                    class="sapUiTinyMarginBeginEnd"
+                    icon="sap-icon://cart">
+                        <customData>
+                            <BadgeCustomData
+                                key="badge"
+                                value="{worklistView>/totalBooksInOrderAmount}"/>
+                        </customData>
+                </Button>
+                <Button 
+                    type="Transparent" 
+                    icon="sap-icon://sys-cancel"
+                    press="onClearOrderFromBooksPress"
+                    tooltip="Clear order from selected books"/>
+			</HBox>
+        </semantic:headerContent>
+
+		<semantic:content>
+			<Table
+				id="booksTable"
+				width="auto"
+				items="{
+					path: '/Books',
+					sorter: {
+						path: 'title',
+						descending: false
+					},
+                    parameters: {expand: 'author'}
+				}"
+				noDataText="{worklistView>/tableNoDataText}"
+				growing="true"
+				growingScrollToLoad="true"
+				updateFinished=".onUpdateFinished">
+
+				<headerToolbar>
+					<Toolbar>
+                        <Title 
+                            id="tableHeader" 
+                            text="{worklistView>/worklistTableTitle}"
+                            level="H2"/>
+						<ToolbarSpacer />
+                      
+						<SearchField
+							id="searchField"
+							tooltip="{i18n>worklistSearchTooltip}"
+							search=".onSearch"
+							width="auto">
+						</SearchField>
+					</Toolbar>
+				</headerToolbar>
+
+				<columns>
+                    <Column 
+                        id="bookTitleColumn">
+                        <HBox 
+                            alignItems="Center" 
+                            alignContent="SpaceBetween">
+                            <OverflowToolbarButton
+                                text="title"
+                                icon="sap-icon://{
+                                    path: 'worklistView>/sortTypes/title',
+                                    formatter: '.formatter.sortTypeFormatter'
+                                }"
+                                press="onSortButtonPress" 
+                                type="Transparent"/>
+                            <Text 
+                                text="{i18n>bookTitleColumnTitle}" 
+                                id="bookTitleColumnTitle"/>
+						</HBox>
+					</Column>
+                    <Column 
+                        id="bookAuthorColumn"
+                        popinDisplay="Block"
+                        demandPopin="true">
+                        <Text 
+                            text="{i18n>bookAuthorColumnTitle}" 
+                            id="bookAuthorColumnTitle"/>
+					</Column>
+                    <Column 
+                        minScreenWidth="Tablet"
+                        id="bookDescriptionColumn" 
+                        width="25vw">
+                        <Text 
+                            text="{i18n>bookDescriptionColumnTitle}" id="bookDescriptionColumnTitle"/>
+					</Column>
+                    <Column 
+                        id="bookGenreColumn"
+                        popinDisplay="Inline">
+                        <HBox
+                            alignItems="Center" 
+                            alignContent="SpaceBetween">
+                            <OverflowToolbarButton 
+                                text="genre_title"
+                                icon="sap-icon://{
+                                    path: 'worklistView>/sortTypes/genre_title',
+                                    formatter: '.formatter.sortTypeFormatter'
+                                }"
+                                press="onSortButtonPress" 
+                                type="Transparent"/>
+                            <Text 
+                                text="{i18n>bookGenreColumnTitle}" 
+                                id="bookGenreColumnTitle"/>
+                        </HBox>
+					</Column>
+                    <Column 
+                        id="bookPriceColumn">
+                        <HBox
+                            alignItems="Center" 
+                            alignContent="SpaceBetween">
+                            <OverflowToolbarButton 
+                                text="price"
+                                icon="sap-icon://{
+                                    path: 'worklistView>/sortTypes/price',
+                                    formatter: '.formatter.sortTypeFormatter'
+                                }"
+                                press="onSortButtonPress" 
+                                type="Transparent"/>
+                            <Text 
+                                text="{i18n>bookPriceColumnTitle}" 
+                                id="bookpriceColumnTitle"/>
+                        </HBox>
+					</Column>
+                    <Column 
+                        id="bookStockColumn"
+                        hAlign="Right"
+                        width="7vw"
+                        minScreenWidth="Tablet">
+                        <HBox
+                            alignItems="Center" 
+                            alignContent="SpaceBetween">
+                            <OverflowToolbarButton 
+                                text="stock"
+                                icon="sap-icon://{
+                                    path: 'worklistView>/sortTypes/stock',
+                                    formatter: '.formatter.sortTypeFormatter'
+                                }"
+                                press="onSortButtonPress" 
+                                type="Transparent"/>
+                            <Text 
+                                text="{i18n>bookStockColumnTitle}" 
+                                id="bookStockColumnTitle"/>
+                        </HBox>
+					</Column>
+                    <Column 
+                        id="bookRatingColumn"
+                        vAlign="Middle"
+                        minScreenWidth="Tablet">
+                        <HBox
+                            alignItems="Center" 
+                            alignContent="SpaceBetween">
+                            <OverflowToolbarButton 
+                                text="rating"
+                                icon="sap-icon://{
+                                    path: 'worklistView>/sortTypes/rating',
+                                    formatter: '.formatter.sortTypeFormatter'
+                                }"
+                                press="onSortButtonPress" 
+                                type="Transparent"/>
+                            <Text 
+                                text="{i18n>bookRatingColumnTitle}" 
+                                id="bookRatingColumnTitle"/>
+                        </HBox>
+					</Column>
+                    <Column>
+                    </Column>
+                    <Column width="4vw"></Column>
+				</columns>
+
+				<items>
+					<ColumnListItem
+						type="Navigation"
+						press="onBooksListItemSelect">
+						<cells>
+							<Text
+								text="{title}"/>
+                            <Text
+                                text="{author/name}"/>
+							<Text
+								text="{descr}"
+                                maxLines="4"/>
+                            <Text
+								text="{genre_title}"/>
+                            <ObjectNumber
+                                number="{
+                                    parts:[{path:'price'},{path:'currency'}],
+                                    type: 'sap.ui.model.type.Currency',
+                                    formatOptions: {showMeasure: false}
+                                }"
+                                unit="{currency}" />
+                            <Text
+								text="{stock}"
+                                />
+                            <RatingIndicator 
+                                editable="false" 
+                                id="RI_default" 
+                                maxValue="5"
+                                value="{rating}" 
+                                tooltip="Rating Tooltip"/>
+                            <StepInput
+                                width="70%"
+                                value="{path: 'ID', formatter: '.formatter.bookInOrderAmountFormatter'}"
+                                min="0"
+                                max="{stock}"
+                                change="orderBookAmountChange"
+                                validationMode="LiveChange"
+                                fieldGroupIds="stepInput"/>
+                            <HBox 
+                                justifyContent="Center">
+                                <Button 
+                                    type="Transparent" 
+                                    icon="sap-icon://delete"
+                                    press="onDeleteBookButtonPress"
+                                    tooltip="Delete"/>
+                            </HBox>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+
+        <semantic:footerCustomActions>
+            <Button 
+                icon="sap-icon://create-form"
+                text="{i18n>createBookButton}"
+                press="onOpenCreateBookDialogButtonPress"/>
+		</semantic:footerCustomActions>
+	</semantic:SemanticPage>
+</mvc:View>

@@ -1,0 +1,84 @@
+<core:FragmentDefinition
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:uxap="sap.uxap"
+    xmlns="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+
+    <f:SimpleForm
+        layout="ResponsiveGridLayout"
+        labelSpanXL="1"
+        labelSpanL="1"
+        labelSpanM="1"
+        emptySpanXL="0"
+        emptySpanL="0"
+        emptySpanM="0"
+        columnsXL="1"
+        columnsL="1"
+        columnsM="1"
+        validateFieldGroup="onValidateProductCreateFieldGroup"
+        editable="true">
+        <f:content>
+            <Label
+                text="{i18n>bookAuthorNameLabel}"
+                labelFor="bookAuthorName"/>
+            <Text
+                text="{author/name}"
+                id="bookAuthorName"
+                visible="{= !${objectView>/edit}}">
+                <layoutData>
+                    <l:GridData span="XL11 L11 M9 S6" />
+                </layoutData>
+            </Text>
+
+            <Label
+                text="{i18n>bookDescriptionLabel}"
+                labelFor="bookDescription" />
+            <Text
+                text="{descr}"
+                id="bookDescription"
+                visible="{= !${objectView>/edit}}">
+                <layoutData>
+                    <l:GridData span="XL11 L11 M9 S6" />
+                </layoutData>
+            </Text>
+
+            <Label
+                text="{i18n>bookGenreLabel}"
+                labelFor="bookGenre" />
+            <Text
+                text="{genre_title}"
+                id="bookGenre"
+                visible="{= !${objectView>/edit}}" />
+
+            <Label
+                text="{i18n>bookStockLabel}"
+                labelFor="bookStock"/>
+            <Text
+                text="{stock}"
+                id="bookStock"
+                visible="{= !${objectView>/edit}}" />
+
+            <Label
+                text="{i18n>bookPriceLabel}"
+                labelFor="bookPrice" />
+            <Text
+                text="{price} {currency}"
+                id="bookPrice"
+                visible="{= !${objectView>/edit}}" />
+
+            <Label
+                text="{i18n>bookRatingLabel}"
+                labelFor="bookRating"
+                vAlign="Middle"/>
+            <RatingIndicator
+                id="bookRating"
+                maxValue="5"
+                value="{rating}"
+                editable="false"
+                visible="{= !${objectView>/edit}}" />
+        </f:content>
+    </f:SimpleForm>
+
+</core:FragmentDefinition>

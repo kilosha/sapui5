@@ -1,0 +1,72 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" >
+	<Dialog
+		id="CreateAuthorDialog"
+		title="{i18n>createAuthorFormTitle}"
+		afterClose="onAfterCloseCreateAuthorDialog">
+		<f:SimpleForm
+			maxContainerCols="1"
+			layout="ResponsiveGridLayout"
+			labelSpanL="12"
+			labelSpanM="12"
+			emptySpanL="0"
+			emptySpanM="0"
+			columnsL="1"
+			columnsM="1">
+			<f:content>
+				<Label 
+					text="{i18n>createAuthorNameInput}" 
+                    labelFor="authorName"/>
+				<Input 	
+					placeholder="{i18n>createAuthorNameInputPlaceholder}"	
+                    value="{
+                        path : 'name',
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            minLength: 1,
+                            search: '[A-Za-z]+'
+                        }
+                    }"
+					id="authorName" 
+					required="true"
+                    fieldGroupIds="createAuthor"
+                    liveChange= "onInputChange"/>
+
+               <Label 
+					text="{i18n>createAuthorDateOfBirthInput}"
+					labelFor="authorBirthday"/>
+                <DatePicker
+					fieldGroupIds="createAuthor"
+                    id="authorBirthday"
+                    required="true"
+                    placeholder="{i18n>createAuthorDateOfBirthPlaceholder}"
+                    change="onDatePickerValueChange"
+                    value="{dateOfBirth}"
+                    valueFormat="yyyy-MM-dd"/>
+
+                <Label 
+					text="{i18n>createAuthorCountryOfBirthInput}" 
+                    labelFor="authorCountry"/>
+                <ComboBox
+                    id="authorCountry"
+					required="true"
+                    selectedKey="{countryOfBirth}"
+					items="{
+						path: 'countriesJSONModel>/'
+					}">
+					<core:Item key="{countriesJSONModel>name}" text="{countriesJSONModel>name}"/>
+			    </ComboBox>
+			</f:content>
+		</f:SimpleForm>
+		<buttons>
+			<Button 
+				text="{i18n>submitCreateAuthorButton}" 
+				press="onSubmitCreateAuthorButtonPress" />
+            <Button 
+				text="{i18n>cancelCreateAuthorDialogButton}" 
+				press="onCancelCreateDialogButtonPress" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

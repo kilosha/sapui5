@@ -1,0 +1,161 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core" >
+	<Dialog
+		id="CreateBookDialog"
+		title="{i18n>createBookFormTitle}"
+		afterClose="onAfterCloseCreateBookDialog">
+		<f:SimpleForm
+			maxContainerCols="1"
+			layout="ResponsiveGridLayout"
+			labelSpanL="12"
+			labelSpanM="12"
+			emptySpanL="0"
+			emptySpanM="0"
+			columnsL="1"
+            columnsM="1">
+			<f:content>
+				<Label 
+					text="{i18n>createBookTitleInput}" 
+					labelFor="book-title"/>
+				<Input 	
+					placeholder="{i18n>createBookTitleInputPlaceholder}"	 
+                    value="{
+                        path : 'title',
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            minLength: 1,
+                            search: '[A-Za-z]+'
+                        }
+                    }"
+					id="book-title" 
+					required="true"
+                    fieldGroupIds="createBook"
+                    liveChange= "onInputChange"
+                />
+
+				<Label 
+					text="{i18n>createBookAuthorInput}" 
+					labelFor="book-author"/>
+                <ActionSelect
+                    id="book-author"
+                    buttons="button1"
+                    required="true"
+                    items="{
+                        path: '/Authors',
+                        sorter: { path: 'name' }
+                    }">
+                    <items>
+                        <core:Item key="{ID}" text="{name}" />
+                    </items>
+                    <dependents>
+                        <Button id="button1" text="{i18n>addNewAuthorButtonPress}" press="onAddNewAuthorButtonPress" />
+                    </dependents>
+		        </ActionSelect>    
+
+				<Label 
+					text="{i18n>createBookDescriptionInput}" 
+					labelFor="book-description"/>
+				<TextArea 
+					fieldGroupIds="createBook" 
+                    value="{
+                        path : 'descr',
+                        type : 'sap.ui.model.type.String',
+                        constraints : {
+                            minLength: 1,
+                            search: '[A-Za-z]+'
+                        }
+                    }"
+					placeholder="{i18n>createBookDescriptionInputPlaceholder}" 
+					id="book-description" 
+                    required="true"
+                    liveChange= "onInputChange" />
+
+				<Label 
+					text="{i18n>createBookGenreInput}" 
+					labelFor="book-genre"/>
+                <Select
+					id="book-genre"
+					required="true"
+                    selectedKey="{genre_title}"
+					forceSelection="false"
+					items="{
+						path: '/Genres',
+						sorter: { path: 'title' }
+					}">
+					<core:Item key="{title}" text="{title}"/>
+			    </Select>
+
+               <Label 
+					text="{i18n>createBookPriceInput}"
+					labelFor="book-price"/>
+				<Input 
+					description="USD" 
+					fieldWidth="85%" 
+					fieldGroupIds="createBook" 
+                    value= "{
+                        path: 'price',
+                        type:'sap.ui.model.type.Float',
+                        formatOptions: {
+                            minIntegerDigits: '0',
+                            minFractionDigits: '2',
+                            maxFractionDigits: '2'
+                        },
+                        constraints: {
+                            minimum: '0.01'
+                        }
+                    }"
+					placeholder="{i18n>createBookPriceInputPlaceholder}"
+					id="book-price" 
+					required="true" 
+                    change="onPriceChangeInputValueEvent"
+                    liveChange= "onInputChange"/>
+
+                <Label 
+					text="{i18n>createBookStockInput}" 
+					labelFor="book-stock"/>
+				<Input
+					fieldGroupIds="createBook" 
+					placeholder="{i18n>createBookStockInputPlaceholder}" 
+					id="book-stock" 
+					required="true"
+					value= "{
+                        path: 'stock',
+                        type:'sap.ui.model.type.Integer',
+                        constraints: {
+                            minimum: 1
+                        }
+                    }"
+                    liveChange= "onInputChange"
+                />
+                    
+                <Label 
+					text="{i18n>createBookRatingInput}"
+					labelFor="book-rating"/>
+				<Input 
+					fieldGroupIds="createBook" 
+                    value="{
+                        path: 'rating',
+                        type:'sap.ui.model.type.Integer',
+                        constraints: {
+                            minimum: 1,
+                            maximum: 5
+                        }
+                    }"
+					placeholder="{i18n>createBookRatingInputPlaceholder}"
+					id="book-rating" 
+                    required="true" 
+                    liveChange= "onInputChange"/>
+			</f:content>
+		</f:SimpleForm>
+		<buttons>
+			<Button 
+				text="{i18n>submitCreateBookButton}" 
+				press="onSubmitCreateBookButtonPress" />
+            <Button 
+				text="{i18n>cancelCreateBookDialogButton}" 
+				press="onCancelCreateDialogButtonPress" />
+		</buttons>
+	</Dialog>
+</core:FragmentDefinition>

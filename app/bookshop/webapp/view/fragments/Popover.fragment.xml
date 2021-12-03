@@ -1,0 +1,14 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:wt="ns.bookshop.control">
+	<ResponsivePopover
+		id="myPopover"
+		class="sapUiResponsiveContentPadding"
+        placement="HorizontalPreferredRight">
+		<content>
+             <wt:CustomNumber   
+                buttonPress="onPressNumberButton"/>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

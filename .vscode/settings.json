@@ -1,0 +1,10 @@
+{
+  "files.exclude": {
+    "**/.gitignore": true,
+    "**/.git": true,
+    "**/.vscode": true
+},
+"[xml].editor.defaultFormatter": "redhat.vscode-xml",
+"xml.format.splitAttributes": true,
+"xml.format.splitAttributesIndentSize": 1
+}
