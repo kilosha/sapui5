@@ -24,6 +24,11 @@ mta_archives/
 *.iml
 *.flattened-pom.xml
 
+dist/
+resources/
+app/*/package-lock.json
+
+
 # IDEs
 # .vscode
 # .idea

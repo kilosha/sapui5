@@ -250,8 +250,7 @@ sap.ui.define([
             
             //create an entry of the Books collection with the specified properties and values
             
-			const oContext = oModel.createEntry("/Books", { 
-                groupId: "book",
+			const oContext = oModel.createEntry("/Books", {
                 properties: { genre_title: Constants.GENRE}
             });
 
@@ -287,11 +286,7 @@ sap.ui.define([
             oFormModel.setProperty(`${sObjectPath}/author_ID`, sAuthorID);
         
             if (this.onValidateFieldGroup("createBook")) {
-                oFormModel.submitChanges(
-                    {
-                        groupId: "book",
-                    }
-                 );
+                oFormModel.submitChanges();
                 oDialog.close();
                 this.byId("booksTable").getModel().refresh();   
             } else {
@@ -373,8 +368,7 @@ sap.ui.define([
             const createNewOrderItems = this._createNewOrderItems.bind(this);
             
 
-            const oContext = oModel.createEntry("/Orders", { 
-                groupId: "order",
+            const oContext = oModel.createEntry("/Orders", {
                 properties: {
                     phoneNumber: "", 
                     paymentMethod: defaultPaymentMethod,
@@ -500,11 +494,7 @@ sap.ui.define([
 
             if (fTotalCost > 0) {
                 if (this.onValidateFieldGroup("createOrder")) {
-                    oFormModel.submitChanges(
-                        {
-                            groupId: "order"
-                        }
-                    );
+                    oFormModel.submitChanges();
                     
                     for (let sKey in oCustomerAddress) {
                         oCustomerAddress[sKey] = "";

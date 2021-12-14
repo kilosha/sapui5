@@ -3,7 +3,7 @@ namespace sap.capire.bookshop;
 using { cuid } from '@sap/cds/common';
 
 entity Books: cuid {
-    title  : String(50);
+    title  : String;
     descr  : String;
     author : Association to Authors;
     genre: Association to Genres;

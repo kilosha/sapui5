@@ -14,7 +14,6 @@ sap.ui.define([
 			return oModel;
         },
 
-
         createCountryModel: function (sizeLimit = 300) {
             let localeId;
             const currentConfig = sap.ui.getCore().getConfiguration();
@@ -27,7 +26,7 @@ sap.ui.define([
                 name: territories[code],
             });
 
-            const obviouslyNotCountries = [
+            const aRegions = [
                 "EU", // "European Union"
                 "EZ", // "Eurozone"
                 "UN", // "United Nations"
@@ -35,16 +34,14 @@ sap.ui.define([
             ]
 
             const countries = Object.keys(territories)
-                .filter(key => key.length==2 && obviouslyNotCountries.findIndex(item => item == key) == -1)
-                .map(toObject);
-
+                .filter(key => key.length==2 && aRegions.findIndex(item => item == key) == -1)
+                .map(toObject)
+                .sort((a, b) => a.name.localeCompare(b.name))
+           
             const model = new JSONModel(countries);
             model.setSizeLimit(sizeLimit);
             model.setDefaultBindingMode("OneWay");
             return model;
         },
-
-        
 	};
-
 });

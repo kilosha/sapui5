@@ -1,0 +1,33 @@
+{
+  "xsappname": "bookshop",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.BookViewer",
+      "description": "BookViewer"
+    },
+    {
+      "name": "$XSAPPNAME.BookManager",
+      "description": "BookManager"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "BookViewer",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.BookViewer"
+      ],
+      "attribute-references": []
+    },
+    {
+      "name": "BookManager",
+      "description": "generated",
+      "scope-references": [
+        "$XSAPPNAME.BookManager"
+      ],
+      "attribute-references": []
+    }
+  ]
+}

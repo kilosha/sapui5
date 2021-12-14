@@ -33,7 +33,7 @@ sap.ui.define([
             
             this.setModel(models.createCountryModel(), "countriesJSONModel");
 
-            this.getModel().setDeferredGroups(this.getModel().getDeferredGroups().concat(["book", "author", "order"]));
+            this.getModel().setDeferredGroups(this.getModel().getDeferredGroups().concat("author"));
 		},
 
 		/**
@@ -49,11 +49,11 @@ sap.ui.define([
 		},
 
 		/**
-		 * This method can be called to determine whether the sapUiSizeCompact or sapUiSizeCozy
-		 * design mode class should be set, which influences the size appearance of some controls.
-		 * @public
-		 * @return {string} css class, either 'sapUiSizeCompact' or 'sapUiSizeCozy' - or an empty string if no css class should be set
-		 */
+		* This method can be called to determine whether the sapUiSizeCompact or sapUiSizeCozy
+		* design mode class should be set, which influences the size appearance of some controls.
+		* @public
+		* @return {string} css class, either 'sapUiSizeCompact' or 'sapUiSizeCozy' - or an empty string if no css class should be set
+		*/
 		getContentDensityClass : function() {
 			if (this._sContentDensityClass === undefined) {
 				// check whether FLP has already set the content density class; do nothing in this case
@@ -69,8 +69,5 @@ sap.ui.define([
 			}
 			return this._sContentDensityClass;
         },
-       
-
 	});
-
 });

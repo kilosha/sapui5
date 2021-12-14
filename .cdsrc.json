@@ -1,1 +1,25 @@
-{}
+{
+    "[development]": {
+        "auth": {
+            "passport": {
+                "strategy": "mock",
+                "users": {
+                    "book.viewer@tester.sap.com": {
+                        "password": "initial",
+                        "ID": "book.viewer@tester.sap.com",
+                        "roles": [
+                            "BookViewer"
+                        ]
+                    },
+                    "book.manager@tester.sap.com": {
+                        "password": "initial",
+                        "ID": "book.manager@tester.sap.com",
+                        "roles": [
+                            "BookManager"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}

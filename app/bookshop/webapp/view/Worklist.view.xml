@@ -68,8 +68,6 @@
                     parameters: {expand: 'author'}
 				}"
 				noDataText="{worklistView>/tableNoDataText}"
-				growing="true"
-				growingScrollToLoad="true"
 				updateFinished=".onUpdateFinished">
 
 				<headerToolbar>
@@ -91,7 +89,8 @@
 
 				<columns>
                     <Column 
-                        id="bookTitleColumn">
+                        id="bookTitleColumn"
+                        width="10vw">
                         <HBox 
                             alignItems="Center" 
                             alignContent="SpaceBetween">
@@ -143,7 +142,8 @@
                         </HBox>
 					</Column>
                     <Column 
-                        id="bookPriceColumn">
+                        id="bookPriceColumn"
+                        width="7vw">
                         <HBox
                             alignItems="Center" 
                             alignContent="SpaceBetween">
@@ -215,9 +215,11 @@
 								text="{title}"/>
                             <Text
                                 text="{author/name}"/>
-							<Text
-								text="{descr}"
-                                maxLines="4"/>
+                            <ExpandableText
+                                text="{descr}"
+                                maxCharacters="200"
+                                overflowMode="Popover"/>
+                                
                             <Text
 								text="{genre_title}"/>
                             <ObjectNumber

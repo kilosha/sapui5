@@ -1,4 +1,4 @@
-using AdminService as service from '../../srv/admin-service';
+using FioriService as service from '../../srv/fiori-service';
 
 annotate service.Books with @(
 	UI: {

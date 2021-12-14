@@ -33,7 +33,6 @@ sap.ui.define([
 			this._pPopover.then(function(oPopover) {
 				oPopover.openBy(oButton);
 			});
-
         }
     });
 });

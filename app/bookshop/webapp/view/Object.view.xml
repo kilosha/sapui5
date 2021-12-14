@@ -7,7 +7,8 @@
     xmlns:f="sap.ui.layout.form">
     <uxap:ObjectPageLayout 
         id="ObjectPageLayout"
-        showFooter="{objectView>/edit}" >
+        showFooter="{objectView>/edit}"
+        upperCaseAnchorBar="false" >
 
         <uxap:headerTitle>
             <uxap:ObjectPageDynamicHeaderTitle>
@@ -19,38 +20,22 @@
                 </uxap:breadcrumbs>
 
                 <uxap:heading>
-                    <HBox>
-                        <Title 
-                            text="{title}" 
-                            visible="{= !${objectView>/edit}}"/>
-                        <HBox
-                            visible="{objectView>/edit}"
-                            justifyContent="End"
-                            alignItems="Center">
-                            <Label 
-                                text="{i18n>bookTitleLabel}"
-                                labelFor="bookTitleEdit"
-                                vAlign="Middle"
-                                class="sapUiTinyMarginEnd"/>
-                            <Input 
-                                value="{
-                                    path : 'title',
-                                    type : 'sap.ui.model.type.String',
-                                    constraints : {
-                                        minLength: 1,
-                                        search: '[A-Za-z]+'
-                                    }
-                                }"
-                                placeholder="{i18n>}"
-                                id="bookTitleEdit" 
-                                required="{objectView>/required}"/>
-                        </HBox>
-                    </HBox>    
+                    <Title 
+                        text="{title}"/>
                 </uxap:heading>
 
                 <uxap:expandedContent>
 				    <Text text="{author/name}"/>
 				</uxap:expandedContent>
+
+                <uxap:content>
+					<GenericTag
+                        id="bookAmountIndicator"
+                        status = "{ 
+                            path: 'stock',
+                            formatter: '.formatter.bookStatusFormatter'
+                        }"/>
+				</uxap:content>
 
 				<uxap:snappedContent>
 					<Text text="{author/name}"/>
@@ -78,179 +63,151 @@
         </uxap:headerTitle>
 
         <uxap:headerContent> 
-            <f:SimpleForm
-                id="bookInfoForm"
-                editable="true"
-                layout="ResponsiveGridLayout">
-            </f:SimpleForm>
-    
+            <HBox>
+                <VBox class="sapUiLargeMarginEnd">
+                    <Title text="{i18n>bookPriceLabel}" class="sapUiTinyMarginBottom" />
+                    <ObjectNumber
+                        class="sapMObjectNumberLarge"
+                        number="{
+                            parts:[{path:'price'},{path:'currency'}],
+                            type: 'sap.ui.model.type.Currency',
+                            formatOptions: {showMeasure: false}
+                        }"
+                        unit="{currency}" />
+                </VBox>
+                <VBox class="sapUiLargeMarginBegin">
+                    <Title text="{i18n>bookRatingLabel}" class="sapUiTinyMarginBottom" />
+                    <RatingIndicator
+                        maxValue="5"
+                        value="{rating}"
+                        editable="false"/>
+                </VBox>
+            </HBox>
         </uxap:headerContent>
 
         <uxap:sections>
-
-            <uxap:ObjectPageSection titleUppercase="false" title="Book details">
-				<uxap:subSections>
-					<uxap:ObjectPageSubSection title="Book details" titleUppercase="false">
-                        <f:SimpleForm
-                            layout="ResponsiveGridLayout"
-                            labelSpanXL="1"
-                            labelSpanL="1"
-                            labelSpanM="1"
-                            emptySpanXL="0"
-                            emptySpanL="0"
-                            emptySpanM="0"
-                            columnsXL="1"
-                            columnsL="1"
-                            columnsM="1"
-                            validateFieldGroup="onValidateProductCreateFieldGroup"
-                            editable="true">
-                            <f:content>
-                                <Label
-                                    text="{i18n>bookDescriptionLabel}"
-                                    labelFor="bookDescription" />
-                                <Text
-                                    text="{descr}"
-                                    id="bookDescription"
-                                    visible="{= !${objectView>/edit}}">
-                                    <layoutData>
-                                        <l:GridData span="XL11 L11 M9 S6" />
-                                    </layoutData>
-                                </Text>
-
-                                <Label
-                                    text="{i18n>bookGenreLabel}"
-                                    labelFor="bookGenre" />
-                                <Text
-                                    text="{genre_title}"
-                                    id="bookGenre"
-                                    visible="{= !${objectView>/edit}}" />
-
-                                <Label
-                                    text="{i18n>bookStockLabel}"
-                                    labelFor="bookStock"/>
-                                <Text
-                                    text="{stock}"
-                                    id="bookStock"
-                                    visible="{= !${objectView>/edit}}" />
-                            </f:content>
-                        </f:SimpleForm>
-					</uxap:ObjectPageSubSection>
-				</uxap:subSections>
+            <uxap:ObjectPageSection title="Book details">
+                <uxap:ObjectPageSubSection>
+                    <f:SimpleForm
+                        id="bookInfoForm"
+                        editable="true"
+                        layout="ResponsiveGridLayout">
+                    </f:SimpleForm>
+                </uxap:ObjectPageSubSection>
 			</uxap:ObjectPageSection>
 
 
-            <uxap:ObjectPageSection showTitle="false">
-                <uxap:ObjectPageSubSection showTitle="false">
-                    <Table
-                        id="ordersTable"
-                        width="auto"
-                        items="{
-                            path: 'orders',
-                            parameters: {expand: 'up_'}
-                        }"
-                        noDataText="{i18n>tableNoOrdersText}"
-                        growing="true"
-                        growingScrollToLoad="true"
-                        updateFinished=".onUpdateFinished"
-                        >
+            <uxap:ObjectPageSection titleUppercase="false">
+                <uxap:subSections>
+                    <uxap:ObjectPageSubSection title="Orders information">
+                        <Table
+                            id="ordersTable"
+                            width="auto"
+                            items="{
+                                path: 'orders',
+                                parameters: {expand: 'up_'}
+                            }"
+                            noDataText="{i18n>tableNoOrdersText}"
+                            updateFinished=".onUpdateFinished">
 
-                        <headerToolbar>
-                            <Toolbar>
-                                <Title 
-                                    id="ordersTableHeader" 
-                                    text="{objectView>/orderslistTableTitle}"/>
-                            </Toolbar>
-                        </headerToolbar>
+                            <headerToolbar>
+                                <Toolbar>
+                                    <Title 
+                                        id="ordersTableHeader" 
+                                        text="{objectView>/orderslistTableTitle}"/>
+                                </Toolbar>
+                            </headerToolbar>
 
-                        <columns>
-                            <Column 
-                                id="orderDeliveryDateColumn">
-                                 <Text 
-                                    text="{i18n>orderDeliveryDateColumnTitle}" 
-                                    id="orderDeliveryDateColumnTitle"/>
-                            </Column>
-                            <Column 
-                                id="orderCustomerNameColumn">
-                                <Text 
-                                    text="{i18n>orderCustomerNameColumnTitle}" 
-                                    id="orderCustomerNameColumnTitle"/>
-                            </Column>
-                            <Column 
-                                id="orderCityColumn">
-                                <Text 
-                                    text="{i18n>orderCityColumnTitle}" 
-                                    id="orderCityColumnTitle"/>
-                            </Column>
-                            <Column 
-                                id="orderAddressColumn"
-                                width="15vw">
-                                <Text 
-                                    text="{i18n>orderAddressColumnTitle}" 
-                                    id="orderAddressColumnTitle"/>
-                            </Column>
-                            <Column 
-                                id="orderPhoneNumberColumn">
-                                <Text 
-                                    text="{i18n>orderPhoneNumberColumnTitle}" 
-                                    id="orderPhoneNumberColumnTitle"/>
-                            </Column>
-                            <Column 
-                                id="orderPaymentMethodColumn">
-                                <Text 
-                                    text="{i18n>orderPaymentMethodTitle}" 
-                                    id="orderPaymentMethodColumnTitle"/>
-                            </Column>
-                            <Column 
-                                id="orderTotalCostColumn" >
-                                <Text 
-                                    text="{i18n>orderTotalCostColumnTitle}" 
-                                    id="orderTotalCostColumnTitle"/>
-                            </Column>
-                            <Column 
-                                id="orderAmountColumn"  
-                                hAlign="Right">
-                                <Text 
-                                    text="{i18n>orderAmountColumnTitle}" 
-                                    id="orderAmountColumnTitle"/>
-                            </Column>
-                        </columns>
+                            <columns>
+                                <Column 
+                                    id="orderDeliveryDateColumn">
+                                    <Text 
+                                        text="{i18n>orderDeliveryDateColumnTitle}" 
+                                        id="orderDeliveryDateColumnTitle"/>
+                                </Column>
+                                <Column 
+                                    id="orderCustomerNameColumn">
+                                    <Text 
+                                        text="{i18n>orderCustomerNameColumnTitle}" 
+                                        id="orderCustomerNameColumnTitle"/>
+                                </Column>
+                                <Column 
+                                    id="orderCityColumn">
+                                    <Text 
+                                        text="{i18n>orderCityColumnTitle}" 
+                                        id="orderCityColumnTitle"/>
+                                </Column>
+                                <Column 
+                                    id="orderAddressColumn"
+                                    width="15vw">
+                                    <Text 
+                                        text="{i18n>orderAddressColumnTitle}" 
+                                        id="orderAddressColumnTitle"/>
+                                </Column>
+                                <Column 
+                                    id="orderPhoneNumberColumn">
+                                    <Text 
+                                        text="{i18n>orderPhoneNumberColumnTitle}" 
+                                        id="orderPhoneNumberColumnTitle"/>
+                                </Column>
+                                <Column 
+                                    id="orderPaymentMethodColumn">
+                                    <Text 
+                                        text="{i18n>orderPaymentMethodTitle}" 
+                                        id="orderPaymentMethodColumnTitle"/>
+                                </Column>
+                                <Column 
+                                    id="orderTotalCostColumn" >
+                                    <Text 
+                                        text="{i18n>orderTotalCostColumnTitle}" 
+                                        id="orderTotalCostColumnTitle"/>
+                                </Column>
+                                <Column 
+                                    id="orderAmountColumn"  
+                                    hAlign="Right">
+                                    <Text 
+                                        text="{i18n>orderAmountColumnTitle}" 
+                                        id="orderAmountColumnTitle"/>
+                                </Column>
+                            </columns>
 
-                        <items>
-                            <ColumnListItem
-                                type="Navigation"
-                                press="onBooksListItemSelect">
-                                <cells>
-                                    <Text text="{
-                                        path: 'up_/deliveryDate',
-                                        type: 'sap.ui.model.type.Date',
-                                        formatOptions: {
-                                            style: 'medium'
-                                        }
-                                    }"/>
-                                    <Text
-                                        text="{up_/customerName}"/>
-                                    <Text
-                                        text="{up_/customerCity}"/>
-                                    <Text
-                                        text="{up_/customerAddress}"/>
-                                    <Text
-                                        text="{up_/phoneNumber}"/>
-                                    <Text
-                                        text="{up_/paymentMethod}"/>
-                                    <ObjectNumber
-                                        number="{
-                                            parts:[{path:'up_/totalCost'},{path:'up_/currency'}],
-                                            type: 'sap.ui.model.type.Currency',
-                                            formatOptions: {showMeasure: false}
-                                        }"
-                                        unit="{up_/currency}" />
-                                    <Text
-                                        text="{amount}"/>
-                                </cells>
-                            </ColumnListItem>
-                        </items>
-                    </Table>
-                </uxap:ObjectPageSubSection>
+                            <items>
+                                <ColumnListItem
+                                    type="Navigation"
+                                    press="onBooksListItemSelect">
+                                    <cells>
+                                        <Text text="{
+                                            path: 'up_/deliveryDate',
+                                            type: 'sap.ui.model.type.Date',
+                                            formatOptions: {
+                                                style: 'medium'
+                                            }
+                                        }"/>
+                                        <Text
+                                            text="{up_/customerName}"/>
+                                        <Text
+                                            text="{up_/customerCity}"/>
+                                        <Text
+                                            text="{up_/customerAddress}"/>
+                                        <Text
+                                            text="{up_/phoneNumber}"/>
+                                        <Text
+                                            text="{up_/paymentMethod}"/>
+                                        <ObjectNumber
+                                            number="{
+                                                parts:[{path:'up_/totalCost'},{path:'up_/currency'}],
+                                                type: 'sap.ui.model.type.Currency',
+                                                formatOptions: {showMeasure: false}
+                                            }"
+                                            unit="{up_/currency}" />
+                                        <Text
+                                            text="{amount}"/>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </uxap:ObjectPageSubSection>
+                </uxap:subSections>
             </uxap:ObjectPageSection>
         </uxap:sections>
 
@@ -260,13 +217,14 @@
                 <Button 
                     id="save" 
                     text="Save" 
-                    type="Emphasized" 
+                    type="Accept" 
                     visible="{objectView>/edit}"
                     tooltip="Save changes"
                     press="onSaveBookEditChangesButtonPress" />
                 <Button 
                     id="cancel" 
                     text="Cancel" 
+                    type="Reject"
                     visible="{objectView>/edit}" 
                     tooltip="Cancel changes"
                     press="onCancelBookEditChangesButtonPress" />

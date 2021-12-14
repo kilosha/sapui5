@@ -158,7 +158,8 @@
                 <List mode="Delete"
                     items="{worklistView>/booksInOrder}"
                     delete="onDeleteBookFromOrderButtonPress"
-                    headerText="Total cost: {worklistView>/totalCost} USD">
+                    headerText="Total cost: {worklistView>/totalCost} USD"
+                    noDataText="Your order list is empty! Go back and add any book.">
                     <ObjectListItem
                         title="{worklistView>title}"
                         type="Detail"
