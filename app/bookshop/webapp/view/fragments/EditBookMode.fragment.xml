@@ -55,7 +55,7 @@
                         <core:Item key="{ID}" text="{name}" />
                     </items>
                     <dependents>
-                        <Button id="button2" text="{i18n>addNewAuthorButtonPress}" press=".onAddNewAuthorButtonPress" width="inherit"/>
+                        <Button id="button2" text="{i18n>addNewAuthorButtonPress}" press=".onAddNewAuthorButtonPress"/>
                     </dependents>
 		        </ActionSelect>
 

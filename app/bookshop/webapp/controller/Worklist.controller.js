@@ -7,8 +7,9 @@ sap.ui.define([
     "sap/ui/model/FilterOperator",
     "sap/m/MessageToast",
     "sap/ui/core/Fragment",
-    "sap/m/MessageBox"
-], function (BaseController, JSONModel, formatter, Constants, Filter, FilterOperator,MessageToast, Fragment, MessageBox) {
+    "sap/m/MessageBox",
+    "ns/bookshop/libs/moment"
+], function (BaseController, JSONModel, formatter, Constants, Filter, FilterOperator,MessageToast, Fragment, MessageBox, momentjs) {
 	"use strict";
 
 	return BaseController.extend("ns.bookshop.controller.Worklist", {
@@ -45,14 +46,7 @@ sap.ui.define([
 					"stock": Constants.SORT_NONE,
 					"rating": Constants.SORT_NONE
                 },
-                totalCost: 0,
-                booksInOrder: [],
-                totalBooksInOrderAmount: 0,
-                customerAddress: {
-                    street: "",
-                    houseNumber: "",
-                    apartmentNumber: ""
-                }
+                currentDay : `${moment().format('MMMM Do YYYY')} (${moment().format('dddd')})`
             });
             
             this.setModel(oViewModel, "worklistView");
@@ -61,33 +55,7 @@ sap.ui.define([
 			const oMessageManager = sap.ui.getCore().getMessageManager();
             this.setModel(oMessageManager.getMessageModel(), "message");
             oMessageManager.registerObject(this.getView(), true);
-
-            this.getRouter().getRoute("worklist").attachPatternMatched(this._updateBookInOrderArray, this);
         },
-
-        _updateBookInOrderArray : function () {
-            const aBooksInOrder = this.getModel('worklistView').getProperty(`/booksInOrder`);
-            const aBooksInOrderID = aBooksInOrder.map(oBook => oBook.ID);
-            const that = this;
-
-            this.getModel().read("/Books", 
-                {
-                    success: function (response) {
-                        const aBooksID= response.results.map(oBook => oBook.ID);
-
-                        const difference = aBooksInOrderID.filter (bookID => aBooksID.findIndex(item => item == bookID) == -1);
-                        
-                        let index = aBooksInOrder.findIndex(item => item.ID == difference);
-
-                        if (index != -1) {
-                            aBooksInOrder.splice(index,1);
-                            that.updateTotalCost();
-                        }
-                    }
-                }
-            );
-		},
-        
 
 		/* =========================================================== */
 		/* event handlers                                              */
@@ -115,8 +83,6 @@ sap.ui.define([
 				sTitle = this.getResourceBundle().getText("worklistTableTitle");
 			}
             this.getModel("worklistView").setProperty("/worklistTableTitle", sTitle);
-
-            this._updateBookInOrderArray();
 		},
 
 		/**
@@ -284,11 +250,9 @@ sap.ui.define([
             const sAuthorID = this.getView().byId('book-author').getSelectedItem().getKey();
            
             oFormModel.setProperty(`${sObjectPath}/author_ID`, sAuthorID);
-        
             if (this.onValidateFieldGroup("createBook")) {
                 oFormModel.submitChanges();
-                oDialog.close();
-                this.byId("booksTable").getModel().refresh();   
+                oDialog.close(); 
             } else {
 			    MessageToast.show(this.getResourceBundle().getText('fillRequiredFieldsMessageToast'));
             }
@@ -443,15 +407,28 @@ sap.ui.define([
         },
    
         orderBookAmountChange: function (oControlEvent) {
-            const booksArray = this.getModel("worklistView").getProperty(`/booksInOrder`);
-            const book = oControlEvent.getSource().getBindingContext().getObject();
-            const bookID = oControlEvent.getSource().getBindingContext().getObject("ID");
+            const oStepInput = oControlEvent.getSource();
+            const booksArray = this.getModel("orderModel").getProperty(`/booksInOrder`);
+            const book = oStepInput.getBindingContext().getObject();
+            const bookID = oStepInput.getBindingContext().getObject("ID");
             let value = oControlEvent.getParameters().value;
             const currentBookIndexInArray = booksArray.findIndex(book => book.ID == bookID);
 
             if (value > book.stock) {
-                oControlEvent.getSource().setValue(book.stock);
                 value = book.stock;
+
+                oStepInput.setValue(book.stock);
+                oStepInput.setValueState("Warning");
+                oStepInput.setValueStateText(this.getResourceBundle().getText('excessAvailableAmountOfBookWarning', book.stock));
+
+                setTimeout(() => {
+                    oStepInput.setValueState("None");
+                    oStepInput.setValueStateText("");
+                }, 1500);
+
+                this.getResourceBundle().getText('excessAvailableAmountOfBookWarning', book.stock)
+
+            
             }
             
             if (value < 1 ) {
@@ -469,23 +446,14 @@ sap.ui.define([
             this.updateTotalCost();
         },
 
-        updateTotalCost: function () {
-            const oWorklistModel = this.getModel("worklistView");
-            const aBooksInOrder = oWorklistModel.getProperty(`/booksInOrder`);
-            const fTotalBooksInOrderCost = +(aBooksInOrder.reduce((sum, oBook) => sum + +oBook.totalPrice, 0).toFixed(2));
-            const fTotalBooksInOrderAmount = +(aBooksInOrder.reduce((sum, oBook) => sum + +oBook.amount, 0).toFixed(2));
-        
-            oWorklistModel.setProperty('/totalCost', fTotalBooksInOrderCost);
-            oWorklistModel.setProperty('/totalBooksInOrderAmount',             fTotalBooksInOrderAmount);
-        },
+       
 
         submitCreateOrderButtonPress: function (oEvent) {
-
             const oFormModel = this.getModel();
             const oDialog = oEvent.getSource().getParent();
             const sObjectPath = oDialog.getBindingContext().sPath;
-            const fTotalCost = this.getModel("worklistView").getProperty("/totalCost");
-            const oCustomerAddress =  this.getModel('worklistView').getProperty('/customerAddress');
+            const fTotalCost = this.getModel("orderModel").getProperty("/totalCost");
+            const oCustomerAddress =  this.getModel('orderModel').getProperty('/customerAddress');
 
             const sCustomerAddress = `${oCustomerAddress.street} str., ${oCustomerAddress.houseNumber}, ap. ${oCustomerAddress.apartmentNumber}`;
             
@@ -511,7 +479,7 @@ sap.ui.define([
 
         _createNewOrderItems: function (sOrderID) {
             const oODataModel = this.getModel();
-            const aBooksInOrder = this.getModel("worklistView").getProperty(`/booksInOrder`); 
+            const aBooksInOrder = this.getModel("orderModel").getProperty(`/booksInOrder`); 
             const aOrderItems = [];
             
             aBooksInOrder.forEach(oBookInOrder => {
@@ -526,12 +494,14 @@ sap.ui.define([
                 oODataModel.create("/Orders_items", oOrderItem);
             })
 
+
+            this._updateBookStockValue();
             this._resetOrderBooks();
         },
 
         onChangeBookInOrderAmountPress: function (oEvent) {
             const oButton = oEvent.getSource();
-            const oCtx = oButton.getBindingContext("worklistView");
+            const oCtx = oButton.getBindingContext("orderModel");
             const oView = this.getView();
 
 			if (!this._pChangeBookInOrder) {
@@ -547,15 +517,15 @@ sap.ui.define([
 			this._pChangeBookInOrder.then(function(oPopover) {
                 oPopover.bindElement({ 
                     path: oCtx.getPath(), 
-                    model: "worklistView"
+                    model: "orderModel"
                 });
 				oPopover.openBy(oButton);
 			});
         },
 
         currentBookInOrderAmountChange: function (oControlEvent) {
-            const aBooksInOrder = this.getModel("worklistView").getProperty(`/booksInOrder`);
-            const oCurrentBook = oControlEvent.getSource().getBindingContext("worklistView").getObject();
+            const aBooksInOrder = this.getModel("orderModel").getProperty(`/booksInOrder`);
+            const oCurrentBook = oControlEvent.getSource().getBindingContext("orderModel").getObject();
             const sBookID = oCurrentBook.ID;
             const iCurrentBookIndexInArray = aBooksInOrder.findIndex(oBook => oBook.ID === sBookID);
             let iAmount = oControlEvent.getParameters().value;
@@ -583,7 +553,7 @@ sap.ui.define([
             MessageBox.confirm(`Are you sure want to delete all books from the order? `, {
                 onClose: (oAction) => {
                     if (oAction === "OK") {
-                        this._resetOrderBooks("worklistView");
+                        this._resetOrderBooks("orderModel");
                     }
                 }
             });
@@ -596,8 +566,8 @@ sap.ui.define([
         },
 
         onDeleteBookFromOrderButtonPress: function (oEvent) {
-            const oBook = oEvent.getParameters().listItem.getBindingContext("worklistView").getObject();
-            const booksArray = this.getModel("worklistView").getProperty(`/booksInOrder`);
+            const oBook = oEvent.getParameters().listItem.getBindingContext("orderModel").getObject();
+            const booksArray = this.getModel("orderModel").getProperty(`/booksInOrder`);
             const sBookIndex = booksArray.findIndex( book => book.ID == oBook.ID );
 
             MessageBox.confirm(`Are you sure want to delete ${oBook.title} from the order? `, {
@@ -633,7 +603,7 @@ sap.ui.define([
         },
 
         _resetOrderBooks: function () {
-            const oModel = this.getModel('worklistView');
+            const oModel = this.getModel('orderModel');
            
             oModel.setProperty(`/booksInOrder`, []);
             oModel.setProperty(`/totalCost`, 0);
@@ -643,6 +613,15 @@ sap.ui.define([
             this.byId("booksTable").getControlsByFieldGroupId("stepInput").filter(oInput => oInput.isA('sap.m.StepInput')).forEach(oInput => oInput.setValue(0));
         },
 
-
+        _updateBookStockValue: function () {
+            const aBooksInOrder = this.getModel('orderModel').getProperty('/booksInOrder');
+            const oModel = this.getModel();
+            
+            aBooksInOrder.forEach(oBook => {
+                const iNewBookInStockValue = oBook.stock - oBook.amount;
+                oModel.setProperty(`/Books(guid'${oBook.ID}')/stock`, iNewBookInStockValue);
+            })
+            oModel.submitChanges();
+        }
 	});
 });

@@ -3,6 +3,9 @@
     xmlns="sap.m" 
     xmlns:l="sap.ui.layout">
 	<l:VerticalLayout core:require="{handler: 'fb/fioribookshop/custom/CustomColumn'}">
-		<Button text="Convert price" press="handler.buttonPressed"/>
+        <Button 
+            icon="sap-icon://loan" 
+            press="handler.openDialog"
+            type="Transparent"/>
 	</l:VerticalLayout>
 </core:FragmentDefinition>

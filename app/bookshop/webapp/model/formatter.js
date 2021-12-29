@@ -44,7 +44,7 @@ sap.ui.define([
         },
         
         bookInOrderAmountFormatter: function (bookID) {
-            let bookArray = this.getModel('worklistView').getProperty(`/booksInOrder/`);
+            let bookArray = this.getModel('orderModel').getProperty(`/booksInOrder/`);
             let currentBookInOrder = bookArray.find( book => book.ID == bookID);
 
             return currentBookInOrder? currentBookInOrder.amount : 0;

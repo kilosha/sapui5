@@ -16,11 +16,13 @@
                 level="H1" />
 		</semantic:titleHeading>
 
+        <semantic:titleExpandedContent>
+			<Text text="{worklistView>/currentDay}"/>
+        </semantic:titleExpandedContent>
+
+
         <semantic:titleBreadcrumbs> 
-            <Breadcrumbs>
-                <Link 
-                    text="{i18n>bookshopBreadcrump}"/>
-            </Breadcrumbs>
+            <Breadcrumbs currentLocationText="{i18n>bookshopBreadcrump}"/>
         </semantic:titleBreadcrumbs> 
 
         <semantic:headerContent>
@@ -32,7 +34,7 @@
                     vAlign="Middle"
                     design="Bold"/>
                 <Text 
-                    text="{worklistView>/totalCost} {i18n>currency}"
+                    text="{orderModel>/totalCost} {i18n>currency}"
                     class="sapUiTinyMarginBeginEnd"/>
                 <Button 
                     type="Accept"
@@ -44,7 +46,7 @@
                         <customData>
                             <BadgeCustomData
                                 key="badge"
-                                value="{worklistView>/totalBooksInOrderAmount}"/>
+                                value="{orderModel>/totalBooksInOrderAmount}"/>
                         </customData>
                 </Button>
                 <Button 
@@ -56,208 +58,207 @@
         </semantic:headerContent>
 
 		<semantic:content>
-			<Table
-				id="booksTable"
-				width="auto"
-				items="{
-					path: '/Books',
-					sorter: {
-						path: 'title',
-						descending: false
-					},
-                    parameters: {expand: 'author'}
-				}"
-				noDataText="{worklistView>/tableNoDataText}"
-				updateFinished=".onUpdateFinished">
-
-				<headerToolbar>
-					<Toolbar>
-                        <Title 
-                            id="tableHeader" 
-                            text="{worklistView>/worklistTableTitle}"
-                            level="H2"/>
-						<ToolbarSpacer />
-                      
-						<SearchField
-							id="searchField"
-							tooltip="{i18n>worklistSearchTooltip}"
-							search=".onSearch"
-							width="auto">
-						</SearchField>
-					</Toolbar>
-				</headerToolbar>
-
-				<columns>
-                    <Column 
-                        id="bookTitleColumn"
-                        width="10vw">
-                        <HBox 
-                            alignItems="Center" 
-                            alignContent="SpaceBetween">
-                            <OverflowToolbarButton
-                                text="title"
-                                icon="sap-icon://{
-                                    path: 'worklistView>/sortTypes/title',
-                                    formatter: '.formatter.sortTypeFormatter'
-                                }"
-                                press="onSortButtonPress" 
-                                type="Transparent"/>
-                            <Text 
-                                text="{i18n>bookTitleColumnTitle}" 
-                                id="bookTitleColumnTitle"/>
-						</HBox>
-					</Column>
-                    <Column 
-                        id="bookAuthorColumn"
-                        popinDisplay="Block"
-                        demandPopin="true">
-                        <Text 
-                            text="{i18n>bookAuthorColumnTitle}" 
-                            id="bookAuthorColumnTitle"/>
-					</Column>
-                    <Column 
-                        minScreenWidth="Tablet"
-                        id="bookDescriptionColumn" 
-                        width="25vw">
-                        <Text 
-                            text="{i18n>bookDescriptionColumnTitle}" id="bookDescriptionColumnTitle"/>
-					</Column>
-                    <Column 
-                        id="bookGenreColumn"
-                        popinDisplay="Inline">
-                        <HBox
-                            alignItems="Center" 
-                            alignContent="SpaceBetween">
-                            <OverflowToolbarButton 
-                                text="genre_title"
-                                icon="sap-icon://{
-                                    path: 'worklistView>/sortTypes/genre_title',
-                                    formatter: '.formatter.sortTypeFormatter'
-                                }"
-                                press="onSortButtonPress" 
-                                type="Transparent"/>
-                            <Text 
-                                text="{i18n>bookGenreColumnTitle}" 
-                                id="bookGenreColumnTitle"/>
-                        </HBox>
-					</Column>
-                    <Column 
-                        id="bookPriceColumn"
-                        width="7vw">
-                        <HBox
-                            alignItems="Center" 
-                            alignContent="SpaceBetween">
-                            <OverflowToolbarButton 
-                                text="price"
-                                icon="sap-icon://{
-                                    path: 'worklistView>/sortTypes/price',
-                                    formatter: '.formatter.sortTypeFormatter'
-                                }"
-                                press="onSortButtonPress" 
-                                type="Transparent"/>
-                            <Text 
-                                text="{i18n>bookPriceColumnTitle}" 
-                                id="bookpriceColumnTitle"/>
-                        </HBox>
-					</Column>
-                    <Column 
-                        id="bookStockColumn"
-                        hAlign="Right"
-                        width="7vw"
-                        minScreenWidth="Tablet">
-                        <HBox
-                            alignItems="Center" 
-                            alignContent="SpaceBetween">
-                            <OverflowToolbarButton 
-                                text="stock"
-                                icon="sap-icon://{
-                                    path: 'worklistView>/sortTypes/stock',
-                                    formatter: '.formatter.sortTypeFormatter'
-                                }"
-                                press="onSortButtonPress" 
-                                type="Transparent"/>
-                            <Text 
-                                text="{i18n>bookStockColumnTitle}" 
-                                id="bookStockColumnTitle"/>
-                        </HBox>
-					</Column>
-                    <Column 
-                        id="bookRatingColumn"
-                        vAlign="Middle"
-                        minScreenWidth="Tablet">
-                        <HBox
-                            alignItems="Center" 
-                            alignContent="SpaceBetween">
-                            <OverflowToolbarButton 
-                                text="rating"
-                                icon="sap-icon://{
-                                    path: 'worklistView>/sortTypes/rating',
-                                    formatter: '.formatter.sortTypeFormatter'
-                                }"
-                                press="onSortButtonPress" 
-                                type="Transparent"/>
-                            <Text 
-                                text="{i18n>bookRatingColumnTitle}" 
-                                id="bookRatingColumnTitle"/>
-                        </HBox>
-					</Column>
-                    <Column>
-                    </Column>
-                    <Column width="4vw"></Column>
-				</columns>
-
-				<items>
-					<ColumnListItem
-						type="Navigation"
-						press="onBooksListItemSelect">
-						<cells>
-							<Text
-								text="{title}"/>
-                            <Text
-                                text="{author/name}"/>
-                            <ExpandableText
-                                text="{descr}"
-                                maxCharacters="200"
-                                overflowMode="Popover"/>
-                                
-                            <Text
-								text="{genre_title}"/>
-                            <ObjectNumber
-                                number="{
-                                    parts:[{path:'price'},{path:'currency'}],
-                                    type: 'sap.ui.model.type.Currency',
-                                    formatOptions: {showMeasure: false}
-                                }"
-                                unit="{currency}" />
-                            <Text
-								text="{stock}"
-                                />
-                            <RatingIndicator 
-                                editable="false" 
-                                id="RI_default" 
-                                maxValue="5"
-                                value="{rating}" 
-                                tooltip="Rating Tooltip"/>
-                            <StepInput
-                                width="70%"
-                                value="{path: 'ID', formatter: '.formatter.bookInOrderAmountFormatter'}"
-                                min="0"
-                                max="{stock}"
-                                change="orderBookAmountChange"
-                                validationMode="LiveChange"
-                                fieldGroupIds="stepInput"/>
+                <Table
+                    id="booksTable"
+                    width="auto"
+                    items="{
+                        path: '/Books',
+                        sorter: {
+                            path: 'title',
+                            descending: false
+                        },
+                        parameters: {expand: 'author'}
+                    }"
+                    noDataText="{worklistView>/tableNoDataText}"
+                    updateFinished=".onUpdateFinished">
+    
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title 
+                                id="tableHeader" 
+                                text="{worklistView>/worklistTableTitle}"
+                                level="H2"/>
+                            <ToolbarSpacer />
+                          
+                            <SearchField
+                                id="searchField"
+                                tooltip="{i18n>worklistSearchTooltip}"
+                                search=".onSearch"
+                                width="auto">
+                            </SearchField>
+                        </Toolbar>
+                    </headerToolbar>
+    
+                    <columns>
+                        <Column 
+                            id="bookTitleColumn"
+                            width="10vw">
                             <HBox 
-                                justifyContent="Center">
-                                <Button 
-                                    type="Transparent" 
-                                    icon="sap-icon://delete"
-                                    press="onDeleteBookButtonPress"
-                                    tooltip="Delete"/>
+                                alignItems="Center" 
+                                alignContent="SpaceBetween">
+                                <OverflowToolbarButton
+                                    text="title"
+                                    icon="sap-icon://{
+                                        path: 'worklistView>/sortTypes/title',
+                                        formatter: '.formatter.sortTypeFormatter'
+                                    }"
+                                    press="onSortButtonPress" 
+                                    type="Transparent"/>
+                                <Text 
+                                    text="{i18n>bookTitleColumnTitle}" 
+                                    id="bookTitleColumnTitle"/>
                             </HBox>
-						</cells>
-					</ColumnListItem>
-				</items>
-			</Table>
+                        </Column>
+                        <Column 
+                            id="bookAuthorColumn"
+                            popinDisplay="Block"
+                            demandPopin="true">
+                            <Text 
+                                text="{i18n>bookAuthorColumnTitle}" 
+                                id="bookAuthorColumnTitle"/>
+                        </Column>
+                        <Column 
+                            minScreenWidth="Tablet"
+                            id="bookDescriptionColumn" 
+                            width="25vw">
+                            <Text 
+                                text="{i18n>bookDescriptionColumnTitle}" id="bookDescriptionColumnTitle"/>
+                        </Column>
+                        <Column 
+                            id="bookGenreColumn"
+                            popinDisplay="Inline">
+                            <HBox
+                                alignItems="Center" 
+                                alignContent="SpaceBetween">
+                                <OverflowToolbarButton 
+                                    text="genre_title"
+                                    icon="sap-icon://{
+                                        path: 'worklistView>/sortTypes/genre_title',
+                                        formatter: '.formatter.sortTypeFormatter'
+                                    }"
+                                    press="onSortButtonPress" 
+                                    type="Transparent"/>
+                                <Text 
+                                    text="{i18n>bookGenreColumnTitle}" 
+                                    id="bookGenreColumnTitle"/>
+                            </HBox>
+                        </Column>
+                        <Column 
+                            id="bookPriceColumn"
+                            width="7vw">
+                            <HBox
+                                alignItems="Center" 
+                                alignContent="SpaceBetween">
+                                <OverflowToolbarButton 
+                                    text="price"
+                                    icon="sap-icon://{
+                                        path: 'worklistView>/sortTypes/price',
+                                        formatter: '.formatter.sortTypeFormatter'
+                                    }"
+                                    press="onSortButtonPress" 
+                                    type="Transparent"/>
+                                <Text 
+                                    text="{i18n>bookPriceColumnTitle}" 
+                                    id="bookpriceColumnTitle"/>
+                            </HBox>
+                        </Column>
+                        <Column 
+                            id="bookStockColumn"
+                            hAlign="Right"
+                            width="7vw"
+                            minScreenWidth="Tablet">
+                            <HBox
+                                alignItems="Center" 
+                                alignContent="SpaceBetween">
+                                <OverflowToolbarButton 
+                                    text="stock"
+                                    icon="sap-icon://{
+                                        path: 'worklistView>/sortTypes/stock',
+                                        formatter: '.formatter.sortTypeFormatter'
+                                    }"
+                                    press="onSortButtonPress" 
+                                    type="Transparent"/>
+                                <Text 
+                                    text="{i18n>bookStockColumnTitle}" 
+                                    id="bookStockColumnTitle"/>
+                            </HBox>
+                        </Column>
+                        <Column 
+                            id="bookRatingColumn"
+                            vAlign="Middle"
+                            minScreenWidth="Tablet">
+                            <HBox
+                                alignItems="Center" 
+                                alignContent="SpaceBetween">
+                                <OverflowToolbarButton 
+                                    text="rating"
+                                    icon="sap-icon://{
+                                        path: 'worklistView>/sortTypes/rating',
+                                        formatter: '.formatter.sortTypeFormatter'
+                                    }"
+                                    press="onSortButtonPress" 
+                                    type="Transparent"/>
+                                <Text 
+                                    text="{i18n>bookRatingColumnTitle}" 
+                                    id="bookRatingColumnTitle"/>
+                            </HBox>
+                        </Column>
+                        <Column>
+                        </Column>
+                        <Column width="4vw"></Column>
+                    </columns>
+    
+                    <items>
+                        <ColumnListItem
+                            type="Navigation"
+                            press="onBooksListItemSelect">
+                            <cells>
+                                <Text
+                                    text="{title}"/>
+                                <Text
+                                    text="{author/name}"/>
+                                <ExpandableText
+                                    text="{descr}"
+                                    maxCharacters="200"
+                                    overflowMode="Popover"/>
+                                    
+                                <Text
+                                    text="{genre_title}"/>
+                                <ObjectNumber
+                                    number="{
+                                        parts:[{path:'price'},{path:'currency'}],
+                                        type: 'sap.ui.model.type.Currency',
+                                        formatOptions: {showMeasure: false}
+                                    }"
+                                    unit="{currency}" />
+                                <Text
+                                    text="{stock}"
+                                    />
+                                <RatingIndicator 
+                                    editable="false" 
+                                    id="RI_default" 
+                                    maxValue="5"
+                                    value="{rating}" 
+                                    tooltip="Rating Tooltip"/>
+                                <StepInput
+                                    width="70%"
+                                    value="{path: 'ID', formatter: '.formatter.bookInOrderAmountFormatter'}"
+                                    min="0"
+                                    max="{stock}"
+                                    change="orderBookAmountChange"
+                                    fieldGroupIds="stepInput"/>
+                                <HBox 
+                                    justifyContent="Center">
+                                    <Button 
+                                        type="Transparent" 
+                                        icon="sap-icon://delete"
+                                        press="onDeleteBookButtonPress"
+                                        tooltip="Delete"/>
+                                </HBox>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
 		</semantic:content>
 
         <semantic:footerCustomActions>

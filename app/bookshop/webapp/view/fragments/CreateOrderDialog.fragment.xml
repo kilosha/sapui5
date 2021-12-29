@@ -1,8 +1,7 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:f="sap.ui.layout.form"
-    xmlns:core="sap.ui.core" 
-    xmlns:wt="ns.bookshop.control">
+    xmlns:core="sap.ui.core">
 	<Dialog
 		id="CreateOrderDialog"
 		title="{i18n>createOrderFormTitle}"
@@ -39,7 +38,7 @@
                 <Label 
 					text="{i18n>createOrderPhoneNumberInput}" 
                     labelFor="phoneNumber"/>
-                <wt:CustomInput 
+                <Input 
                     id="phoneNumber"
                     placeholder="{i18n>createOrderPhoneNumberPlaceholder}" 
                     value="{
@@ -51,9 +50,11 @@
                         }
                     }"
                     required="true"
-                    endButtonPress="handleResponsivePopoverPress"
                     fieldGroupIds="createOrder"
                     change="onCustomInputChange"
+                    showValueHelp="true"
+                    valueHelpIconSrc="sap-icon://call"
+                    valueHelpRequest="handleResponsivePopoverPress"
                 />
 
                 <Label 
@@ -84,7 +85,7 @@
                     <Input 	
                         placeholder="{i18n>createOrderCustomerStreetPlaceholder}"	 
                         value="{
-                            path : 'worklistView>/customerAddress/street',
+                            path : 'orderModel>/customerAddress/street',
                             type : 'sap.ui.model.type.String',
                             constraints : {
                                 minLength: 1,
@@ -99,7 +100,7 @@
                     <Input 	
                         placeholder="{i18n>createOrderCustomerHouseNumberPlaceholder}"	 
                         value="{
-                            path : 'worklistView>/customerAddress/houseNumber',
+                            path : 'orderModel>/customerAddress/houseNumber',
                             type : 'sap.ui.model.type.String',
                             constraints : {
                                 minLength: 1,
@@ -114,7 +115,7 @@
                     <Input 	
                         placeholder="{i18n>createOrderCustomerApartmentNumberPlaceholder}"	 
                         value="{
-                            path : 'worklistView>/customerAddress/apartmentNumber',
+                            path : 'orderModel>/customerAddress/apartmentNumber',
                             type : 'sap.ui.model.type.String',
                             constraints : {
                                 minLength: 1,
@@ -156,22 +157,22 @@
 
                 <Label text="Order list"/>
                 <List mode="Delete"
-                    items="{worklistView>/booksInOrder}"
+                    items="{orderModel>/booksInOrder}"
                     delete="onDeleteBookFromOrderButtonPress"
-                    headerText="Total cost: {worklistView>/totalCost} USD"
+                    headerText="Total cost: {orderModel>/totalCost} USD"
                     noDataText="Your order list is empty! Go back and add any book.">
                     <ObjectListItem
-                        title="{worklistView>title}"
+                        title="{orderModel>title}"
                         type="Detail"
                         detailPress="onChangeBookInOrderAmountPress"
                         number="{
-                            parts:[{path:'worklistView>totalPrice'},{path:'worklistView>currency'}],
+                            parts:[{path:'orderModel>totalPrice'},{path:'orderModel>currency'}],
                             type: 'sap.ui.model.type.Currency',
                             formatOptions: {showMeasure: false}
                         }"
-                        numberUnit="{worklistView>currency}">
-                        <ObjectAttribute text="Unit price: {worklistView>price} {worklistView>currency}"/>
-                        <ObjectAttribute text="Amount: {worklistView>amount}"/>
+                        numberUnit="{orderModel>currency}">
+                        <ObjectAttribute text="Unit price: {orderModel>price} {orderModel>currency}"/>
+                        <ObjectAttribute text="Amount: {orderModel>amount}"/>
                     </ObjectListItem>
 				</List>
 			</f:content>

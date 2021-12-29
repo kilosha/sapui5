@@ -33,4 +33,11 @@ sap.ui.define([
 		numberUnitValueTestCase.call(this, assert, "0", "0.00");
 	});
 
+
+    QUnit.module("Price State");
+
+    // QUnit.test  
+
+    // asset
+
 });

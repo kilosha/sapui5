@@ -1,0 +1,10 @@
+{
+    "totalCost": 0,
+    "booksInOrder": [],
+    "totalBooksInOrderAmount": 0,
+    "customerAddress": {
+        "street": "",
+        "houseNumber": "",
+        "apartmentNumber": ""
+    }
+}

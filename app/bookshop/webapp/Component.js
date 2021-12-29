@@ -2,8 +2,9 @@ sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
 	"./model/models",
-	"./controller/ErrorHandler"
-], function (UIComponent, Device, models, ErrorHandler) {
+	"./controller/ErrorHandler",
+    "sap/ui/model/json/JSONModel"
+], function (UIComponent, Device, models, ErrorHandler, JSONModel) {
 	"use strict";
 
 	return UIComponent.extend("ns.bookshop.Component", {
@@ -34,6 +35,7 @@ sap.ui.define([
             this.setModel(models.createCountryModel(), "countriesJSONModel");
 
             this.getModel().setDeferredGroups(this.getModel().getDeferredGroups().concat("author"));
+
 		},
 
 		/**

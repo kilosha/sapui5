@@ -1,6 +1,9 @@
 using FioriService as service from '../../srv/fiori-service';
 
+
 annotate service.Books with @(
+
+
 	UI: {
         HeaderInfo: {
             TypeName: '{i18n>BookTableTitle}',
@@ -19,7 +22,8 @@ annotate service.Books with @(
                 $Type : 'UI.DataField',
                 Value : title,
                 ![@UI.Importance] : #High,
-                ![@HTML5.CssDefaults] : {width : '10rem'}
+                ![@HTML5.CssDefaults] : {width : '10rem'},
+                
             },
             {
                 $Type : 'UI.DataField',

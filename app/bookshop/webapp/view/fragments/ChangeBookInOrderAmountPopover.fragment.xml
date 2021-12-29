@@ -6,13 +6,13 @@
 		id="mySecondPopover"
 		class="sapUiResponsiveContentPadding"
         placement="HorizontalPreferredRight" 
-        title="{worklistView>title} amount">
+        title="{orderModel>title} amount">
 		<content>
             <StepInput
                 width="100%"
-                value="{path: 'worklistView>ID', formatter: '.formatter.bookInOrderAmountFormatter'}"
+                value="{path: 'orderModel>ID', formatter: '.formatter.bookInOrderAmountFormatter'}"
                 min="0"
-                max="{worklistView>stock}"
+                max="{orderModel>stock}"
                 change="currentBookInOrderAmountChange"/>
 		</content>
 	</ResponsivePopover>

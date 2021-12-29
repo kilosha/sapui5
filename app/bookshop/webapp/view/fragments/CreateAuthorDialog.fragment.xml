@@ -55,7 +55,9 @@
                     selectedKey="{countryOfBirth}"
 					items="{
 						path: 'countriesJSONModel>/'
-					}">
+					}"
+                    change="handleComboBoxChangeValue"
+                    fieldGroupIds="createAuthor">
 					<core:Item key="{countriesJSONModel>name}" text="{countriesJSONModel>name}"/>
 			    </ComboBox>
 			</f:content>

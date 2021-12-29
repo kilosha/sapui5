@@ -18,6 +18,10 @@
                     "odataVersion": "2.0",
                     "localUri": "localService/v2/metadata.xml"
                 }
+            },
+            "orderModel": {
+                "uri": "model/orderModel.json",
+                "type": "JSON"
             }
         },
         "crossNavigation": {
@@ -85,6 +89,10 @@
                     "useBatch": false,
                     "defaultBindingMode": "TwoWay"
                 }
+            },
+            "orderModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "dataSource": "orderModel"
             }
         },
         "routing": {

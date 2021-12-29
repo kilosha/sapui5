@@ -1,81 +1,73 @@
 {
-  "name": "bookshop",
-  "version": "1.0.0",
-  "description": "A simple CAP project.",
-  "repository": "<Add your repository here>",
-  "license": "UNLICENSED",
-  "private": true,
-  "dependencies": {
-    "@sap/cds": "^5",
-    "@sap/cds-odata-v2-adapter-proxy": "^1.7.13",
-    "@sap/xssec": "^3.2.11",
-    "express": "^4",
-    "hdb": "^0.18.3",
-    "passport": "^0.5.0"
-  },
-  "devDependencies": {
-    "@sap/ux-specification": "^1.90.14",
-    "sqlite3": "^5.0.2"
-  },
-  "engines": {
-    "node": "^14"
-  },
-  "scripts": {
-    "start": "cds run",
-    "watch-bookshop": "cds watch --open bookshop/webapp/index.html#fe-lrop-v4",
-    "watch-fioribookshop": "cds watch --open fioribookshop/webapp/index.html#fe-lrop-v4",
-    "watch-bookshopfiori": "cds watch --open bookshopfiori/webapp/index.html#fe-lrop-v4",
-    "undeploy": "cf undeploy bookshop --delete-services --delete-service-keys"
-  },
-  "eslintConfig": {
-    "extends": "eslint:recommended",
-    "env": {
-      "es2020": true,
-      "node": true,
-      "jest": true,
-      "mocha": true
+    "name": "bookshop",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^5",
+        "@sap/cds-odata-v2-adapter-proxy": "^1.8.4",
+        "@sap/xssec": "^3.2.11",
+        "express": "^4",
+        "hdb": "^0.18.3",
+        "passport": "^0.5.2"
     },
-    "globals": {
-      "SELECT": true,
-      "INSERT": true,
-      "UPDATE": true,
-      "DELETE": true,
-      "CREATE": true,
-      "DROP": true,
-      "CDL": true,
-      "CQL": true,
-      "CXL": true,
-      "cds": true
+    "devDependencies": {
+        "@sap/hdi-deploy": "^4.2.3",
+        "@sap/ux-specification": "^1.90.14",
+        "sqlite3": "^5.0.2"
     },
-    "rules": {
-      "no-console": "off",
-      "require-atomic-updates": "off"
-    }
-  },
-  "sapux": [
-    "app/bookshop",
-    "app/fioribookshop",
-    "app/fiori",
-    "app/project1",
-    "app/project",
-    "app/project1",
-    "app/bookshopfiori"
-  ],
-  "cds": {
-    "requires": {
-      "db": {
-        "kind": "sqlite",
-        "credentials": {
-          "database": "my.db"
+    "engines": {
+        "node": "^14"
+    },
+    "scripts": {
+        "start": "cds run",
+        "watch-bookshop": "cds watch --open bookshop/webapp/index.html#fe-lrop-v4",
+        "watch-fioribookshop": "cds watch --open fioribookshop/webapp/index.html#fe-lrop-v4",
+        "undeploy": "cf undeploy bookshop --delete-services --delete-service-keys"
+    },
+    "eslintConfig": {
+        "extends": "eslint:recommended",
+        "env": {
+            "es2020": true,
+            "node": true,
+            "jest": true,
+            "mocha": true
+        },
+        "globals": {
+            "SELECT": true,
+            "INSERT": true,
+            "UPDATE": true,
+            "DELETE": true,
+            "CREATE": true,
+            "DROP": true,
+            "CDL": true,
+            "CQL": true,
+            "CXL": true,
+            "cds": true
+        },
+        "rules": {
+            "no-console": "off",
+            "require-atomic-updates": "off"
         }
-      },
-      "uaa": {
-        "kind": "xsuaa",
-        "credentials": {}
-      }
     },
-    "hana": {
-      "deploy-format": "hdbtable"
+    "sapux": [
+        "app/bookshop",
+        "app/fioribookshop"
+    ],
+    "cds": {
+        "requires": {
+            "db": {
+                "kind": "hana"
+            },
+            "uaa": {
+                "kind": "xsuaa",
+                "credentials": {}
+            }
+        },
+        "hana": {
+            "deploy-format": "hdbtable"
+        }
     }
-  }
 }

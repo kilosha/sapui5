@@ -16,6 +16,10 @@
                 "settings": {
                     "odataVersion": "4.0"
                 }
+            },
+            "JSONModel": {
+                "uri": "model/JSONModel.json",
+                "type": "JSON"
             }
         },
         "offline": false,
@@ -26,7 +30,7 @@
         },
         "crossNavigation": {
             "inbounds": {
-                "Book-display": {
+                "Books-display": {
                     "signature": {
                         "parameters": {},
                         "additionalParameters": "allowed"
@@ -58,15 +62,6 @@
             "js": [],
             "css": []
         },
-        "extends": {
-            "extensions": {
-                "sap.ui.controllerExtensions": {
-                    "sap.fe.templates.ListReport.ListReportController": {
-                        "controllerName": "fb.fioribookshop.custom.CustomController"
-                    }
-                }
-            }
-        },
         "dependencies": {
             "minUI5Version": "1.96.0",
             "libs": {
@@ -92,6 +87,10 @@
                     "autoExpandSelect": true,
                     "earlyRequests": true
                 }
+            },
+            "JSONModel": {
+                "type": "sap.ui.model.json.JSONModel",
+                "dataSource": "JSONModel"
             }
         },
         "routing": {

@@ -57,8 +57,6 @@ sap.ui.define([
 
 			// Set the initial form to be the display one
             this._showFormFragment("DisplayBookMode");
-            
-
 		},
 		/* =========================================================== */
 		/* event handlers                                              */
@@ -257,7 +255,7 @@ sap.ui.define([
             })
 
             return bValid;
-        },
+        }
 	});
 
 });

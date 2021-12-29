@@ -5,8 +5,10 @@ sap.ui.define([
     "sap/m/MessageBox",
     "sap/m/MessageToast",
     "../model/Constants",
-    "sap/ui/model/Sorter"
-], function (Controller, UIComponent, mobileLibrary,MessageBox, MessageToast, Constants, Sorter) {
+    "sap/ui/model/Sorter",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"
+], function (Controller, UIComponent, mobileLibrary,MessageBox, MessageToast, Constants, Sorter, Filter, FilterOperator) {
 	"use strict";
 
 	// shortcut for sap.m.URLHelper
@@ -58,12 +60,18 @@ sap.ui.define([
             const oODataModel = this.getModel();
             const sKey = oODataModel.createKey("/Books", oCtx.getObject());
             const sBookID = oCtx.getObject("ID");
-
+            const aBooksInOrder = this.getModel('orderModel').getProperty('/booksInOrder');
+            const iIndex = aBooksInOrder.findIndex(oBook => oBook.ID === sBookID);
+           
             MessageBox.confirm(`Are you sure want to delete '${oCtx.getObject().title}'? `, {
                 onClose: (sAction) => {
                     if (sAction === "OK") {
+                        if (iIndex !== -1) {
+                            aBooksInOrder.splice(iIndex,1);
+                            this.updateTotalCost();
+                        }
+
                         this._deleteBook(sKey,sBookID);
-                        this.getRouter().navTo("worklist");
                     }
                 }
             });
@@ -83,12 +91,24 @@ sap.ui.define([
                 }
             }) 
         
-            const oData = await this._readP("/Orders_items", `book_ID eq ${sBookID}`);
-    
+            const aFilters =  [
+                new Filter({
+                    path: 'book_ID',
+                    operator: FilterOperator.EQ,
+                    value1: sBookID
+                })
+            ]
+            
+            const oData = await this._readP("/Orders_items", aFilters);
+
             this._deleteOrders(oData);
+            
+            if (!this.getView().getViewName().endsWith('Worklist')) {
+                this.getRouter().navTo("worklist");
+            }
         },
 
-        _readP: function (sPath, sFilter) {
+        _readP: function (sPath, aFilters) {
             const oODataModel = this.getModel();
 
             return new Promise ( (res,rej) => {
@@ -98,10 +118,8 @@ sap.ui.define([
                             res(response);
                         },
 
-                        urlParameters: {
-                            "$filter": sFilter
-                        },
-
+                        filters:  aFilters,
+                        
                         error: function (error) {
                             rej(error);
                         } 
@@ -168,7 +186,9 @@ sap.ui.define([
             const aInputs = aFieldGroup.filter(oInput=> oInput.sParentAggregationName === "fields");
 
             aInputs.forEach( oInput => {
-                if (!oInput.getValue()) {
+                if (oInput.isA('sap.m.ComboBox')) {
+                    this.validateComboBox(oInput)? true: bValid = false;
+                } else if (!oInput.getValue()) {
                     oInput.setValueState("Error");
                     bValid = false;
                 } else {
@@ -204,6 +224,7 @@ sap.ui.define([
         onAddNewAuthorButtonPress: function () {
             const oView = this.getView();
             const oModel = oView.getModel();
+            const that = this;
 
             // create an entry of the Authors collection with the specified properties and values
  
@@ -231,6 +252,37 @@ sap.ui.define([
             const oContext = oDialog.getBindingContext();
 
             oFormModel.resetChanges([oContext.getPath()],undefined, true);
+        },
+
+
+        updateTotalCost: function () {
+            const oWorklistModel = this.getModel("orderModel");
+            const aBooksInOrder = oWorklistModel.getProperty(`/booksInOrder`);
+            const fTotalBooksInOrderCost = +(aBooksInOrder.reduce((sum, oBook) => sum + +oBook.totalPrice, 0).toFixed(2));
+            const fTotalBooksInOrderAmount = +(aBooksInOrder.reduce((sum, oBook) => sum + +oBook.amount, 0).toFixed(2));
+        
+            oWorklistModel.setProperty('/totalCost', fTotalBooksInOrderCost);
+            oWorklistModel.setProperty('/totalBooksInOrderAmount',             fTotalBooksInOrderAmount);
+        },
+
+        handleComboBoxChangeValue: function (oEvent) {
+            const oValidatedComboBox = oEvent.getSource();
+
+            this.validateComboBox(oValidatedComboBox);
+			
+        },
+
+        validateComboBox: function (oValidatedComboBox) {
+            const sSelectedKey = oValidatedComboBox.getSelectedKey();
+
+            if (!sSelectedKey) {
+				oValidatedComboBox.setValueState("Error");
+				oValidatedComboBox.setValueStateText(this.getResourceBundle().getText("createAuthorDialogComboBoxValidation"));
+                return false;
+			} else {
+				oValidatedComboBox.setValueState("None");
+                return true;
+			}
         }
     });
 });

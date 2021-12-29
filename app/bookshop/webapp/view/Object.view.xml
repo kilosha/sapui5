@@ -53,10 +53,11 @@
                         visible="{= !${objectView>/edit}}"
                         tooltip="Edit book"/>
                     <Button 
-                        type="Transparent" 
+                        type="Default" 
                         text="Delete" 
                         press="onDeleteBookButtonPress"
-                        tooltip="Delete book"/>
+                        tooltip="Delete book"
+                        visible="{= !${objectView>/edit}}"/>
                 </uxap:actions>
 
             </uxap:ObjectPageDynamicHeaderTitle>
@@ -217,14 +218,14 @@
                 <Button 
                     id="save" 
                     text="Save" 
-                    type="Accept" 
+                    type="Emphasized" 
                     visible="{objectView>/edit}"
                     tooltip="Save changes"
                     press="onSaveBookEditChangesButtonPress" />
                 <Button 
                     id="cancel" 
                     text="Cancel" 
-                    type="Reject"
+                    type="Default"
                     visible="{objectView>/edit}" 
                     tooltip="Cancel changes"
                     press="onCancelBookEditChangesButtonPress" />

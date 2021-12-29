@@ -1,7 +1,6 @@
 sap.ui.define([
-    "sap/m/MessageBox",
-    "./CustomController.controller"
-],  function(MessageBox, CustomController) {
+    "sap/ui/core/Fragment"
+],  function(Fragment) {
     "use strict";
 
     async function getRate() {
@@ -10,15 +9,34 @@ sap.ui.define([
         return commits.Cur_OfficialRate;
     }
     
-
-   
+  
     return {
-        buttonPressed: function(oEvent) {
-            const oBook = oEvent.getSource().getParent().getBindingContext().getObject();
-            
-            //CustomController.prototype.openCurrencyPopover(oEvent);
-            getRate().then(res=> MessageBox.show(`${(oBook.price*res).toFixed(2)} BYN`));
 
+        openDialog: async function(oEvent) {
+            const JSONModel =  this.getModel("JSONModel");
+            const oBook = oEvent.getSource().getParent().getBindingContext().getObject();
+            const oButton = oEvent.getSource();
+       
+            await getRate().then(res=> JSONModel.setProperty("/currentBookPriceBYN", (oBook.price*res).toFixed(2)));
+         
+        
+
+            JSONModel.setProperty("/currentBookTitle", oBook.title);
+
+            const oBookListPage = sap.ui.getCore().byId("fb.fioribookshop::BooksList");
+
+
+            if (!this.oAddReviewDialog) {
+                this.oAddReviewDialog = await Fragment.load({
+                    id: `${oBookListPage.getId()}-AddReviewDialog`,
+                    name: "fb.fioribookshop.custom.dialogTest"
+                });
+
+                oBookListPage.addDependent(this.oAddReviewDialog);
+            }
+            
+            this.oAddReviewDialog.openBy(oButton);
+            
         }
     };
 });
