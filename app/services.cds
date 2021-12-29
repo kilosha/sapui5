@@ -1,3 +1,3 @@
 
-using from './bookshop/annotations';
+//using from './bookshop/annotations';
 using from './fioribookshop/annotations';

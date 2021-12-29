@@ -48,6 +48,23 @@ sap.ui.define([
             let currentBookInOrder = bookArray.find( book => book.ID == bookID);
 
             return currentBookInOrder? currentBookInOrder.amount : 0;
+        },
+
+
+        bookStatusFormatter: function (iBookInStockAmount) {
+            const i18nModel = this.getResourceBundle();
+            const oControl = this.byId("bookAmountIndicator");
+
+            if (iBookInStockAmount === 0) {
+                oControl.setText(i18nModel.getText("bookOutOfStock"));
+                return i18nModel.getText("warning");
+            } else if (iBookInStockAmount <= 5 && iBookInStockAmount !== null) {
+                oControl.setText(i18nModel.getText("bookSoonBeOver"));
+                return i18nModel.getText("information");
+            }  
+           
+            oControl.setText(i18nModel.getText("bookInStock"));
+            return i18nModel.getText("success");
         }
 	};
 });

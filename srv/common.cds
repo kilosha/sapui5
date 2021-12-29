@@ -1,5 +1,6 @@
 using { sap.capire.bookshop as my } from '../db/schema';
-using AdminService as service from './admin-service';
+//using AdminService as service from './admin-service';
+using FioriService as service from './fiori-service';
 
 
 
@@ -24,23 +25,24 @@ annotate service.Books with {
     currency @UI.Hidden @readonly;
 
     title @title: 'Title' @mandatory 
-          @Common : {
-        Text            : title,
-        TextArrangement : #TextOnly,
+    ;
+    //       @Common : {
+    //     Text            : title,
+    //     TextArrangement : #TextOnly,
 
-        ValueList       : {
-            $Type          : 'Common.ValueListType',
-            Label          : 'Title',
-            CollectionPath : 'Books',
-            Parameters     : [
-            {
-                $Type             : 'Common.ValueListParameterInOut',
-                LocalDataProperty : title,
-                ValueListProperty : 'title'
-            }
-            ]
-        }
-    };
+    //     ValueList       : {
+    //         $Type          : 'Common.ValueListType',
+    //         Label          : 'Title',
+    //         CollectionPath : 'Books',
+    //         Parameters     : [
+    //         {
+    //             $Type             : 'Common.ValueListParameterInOut',
+    //             LocalDataProperty : title,
+    //             ValueListProperty : 'title'
+    //         }
+    //         ]
+    //     }
+    // };
 
     author @Common : {
         Text            : author.name,
@@ -111,3 +113,8 @@ annotate service.Orders_items with {
     book_ID @UI.Hidden;
     amount @title: 'Current book in order amount';
 }
+
+
+
+
+

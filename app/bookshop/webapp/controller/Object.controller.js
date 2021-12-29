@@ -104,6 +104,7 @@ sap.ui.define([
 		 */
 		_bindView : function (sObjectPath) {
 			const oViewModel = this.getModel("objectView");
+            let that = this;
 			this.getView().bindElement({
                 path: sObjectPath,
                 parameters: {expand: 'author'},

@@ -124,7 +124,7 @@
                         path: 'stock',
                         type:'sap.ui.model.type.Integer',
                         constraints: {
-                            minimum: 1
+                            minimum: 0
                         }
                     }"
                     liveChange= "onInputChange"

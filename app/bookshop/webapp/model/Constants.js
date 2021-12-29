@@ -6,7 +6,7 @@ sap.ui.define([] , function () {
         SORT_ASC: "ASC",
         SORT_DESC: "DESC",
         CURRENCY: "USD",
-        COUNTRY: "Russia",
+        COUNTRY: "Afghanistan",
         GENRE: "Autobiography"
     }
 
