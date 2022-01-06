@@ -43,8 +43,13 @@
                     required="true"
                     placeholder="{i18n>createAuthorDateOfBirthPlaceholder}"
                     change="onDatePickerValueChange"
-                    value="{dateOfBirth}"
-                    valueFormat="yyyy-MM-dd"/>
+                    value="{
+                        path: 'dateOfBirth',
+                        type: 'sap.ui.model.odata.type.DateTime',
+                        constraints: {
+                            displayFormat: 'Date'
+                        }
+                    }"/>
 
                 <Label 
 					text="{i18n>createAuthorCountryOfBirthInput}" 
@@ -56,8 +61,7 @@
 					items="{
 						path: 'countriesJSONModel>/'
 					}"
-                    change="handleComboBoxChangeValue"
-                    fieldGroupIds="createAuthor">
+                    change="handleComboBoxChangeValue">
 					<core:Item key="{countriesJSONModel>name}" text="{countriesJSONModel>name}"/>
 			    </ComboBox>
 			</f:content>

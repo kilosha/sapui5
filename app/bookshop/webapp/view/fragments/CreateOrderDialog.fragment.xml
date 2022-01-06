@@ -136,8 +136,13 @@
                     id="deliveryDate"
                     required="true"
                     placeholder="{i18n>createOrderDeliveryDatePlaceholder}"
-                    value="{deliveryDate}"
-                    valueFormat="yyyy-MM-dd"
+                    value="{
+                        path: 'deliveryDate',
+                        type: 'sap.ui.model.odata.type.DateTime',
+                        constraints: {
+                            displayFormat: 'Date'
+                        }
+                    }"
                     fieldGroupIds="createOrder"
                     change="onDatePickerValueChange"/>
 
