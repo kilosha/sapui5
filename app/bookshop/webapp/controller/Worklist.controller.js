@@ -39,8 +39,6 @@ sap.ui.define([
                 ],
                 sortTypes: {
 					"title": Constants.SORT_NONE,
-					"author": Constants.SORT_NONE,
-					"descr": Constants.SORT_NONE,
 					"genre_title": Constants.SORT_NONE,
 					"price": Constants.SORT_NONE,
 					"stock": Constants.SORT_NONE,
@@ -190,7 +188,7 @@ sap.ui.define([
             const oCtx = oItem.getBindingContext();
 
 			this.getRouter().navTo("object", {
-				objectId: `(${oCtx.getObject("ID")})`
+				objectId: `(guid'${oCtx.getObject("ID")}')`
 			});
 		},
 
@@ -264,7 +262,7 @@ sap.ui.define([
         
         onAfterCloseCreateAuthorDialog: function (oEvent) {
             this._resetModelChanges(oEvent);
-
+            
             this._resetFieldGroupValidation("createAuthor");
         },
 
@@ -301,14 +299,6 @@ sap.ui.define([
             };
         },
  
-        onPriceChangeInputValueEvent: function () {
-            const inputValue = +this.getView().byId("book-price").getValue();
-            if (inputValue) {
-                const formattedInputValue = +inputValue.toFixed(2); 
-                this.getView().byId("book-price").setValue(formattedInputValue);
-            }
-        },
-
         onInputChange: function(oEvent) {
             const oInput = oEvent.getSource();
             this._validateInput(oInput);

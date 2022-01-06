@@ -175,7 +175,8 @@ sap.ui.define([
 				const oSorter = new Sorter(sSortField, bSortDesc);
 				oItemsBinding.sort(oSorter);
 			} else {
-				oItemsBinding.sort();			
+                const oSorter = new Sorter("title", false);
+				oItemsBinding.sort(oSorter);			
             }
         },
         
@@ -202,9 +203,7 @@ sap.ui.define([
         onSubmitCreateAuthorButtonPress: function (oEvent) {
             const oFormModel = this.getModel();
             const oCreateAuthorDialog = oEvent.getSource().getParent();
-            
             const bIsValid = this.onValidateCreateAuthorFieldGroup();
-
             if (bIsValid) {
                 oFormModel.submitChanges(
                     {
@@ -283,6 +282,22 @@ sap.ui.define([
 				oValidatedComboBox.setValueState("None");
                 return true;
 			}
+        },
+
+        onPriceChangeInputValueEvent: function (oEvent) {
+            const oInput = oEvent.getSource();
+            const sInputValue = oInput.getValue();
+
+            if (+sInputValue) {
+                const formattedInputValue = (+sInputValue).toFixed(2); 
+                oInput.setValue(formattedInputValue);
+            } else if (sInputValue.includes(",")) {
+                const aInputValue = sInputValue.split("");
+                const sFormattedInputValue = +aInputValue.filter(item => item !== ",").join("");
+                if (!isNaN(sFormattedInputValue)){
+                    oInput.setValue(sFormattedInputValue.toFixed(2));
+                }
+            }
         }
     });
 });

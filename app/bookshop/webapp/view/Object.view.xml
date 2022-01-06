@@ -34,7 +34,12 @@
                         status = "{ 
                             path: 'stock',
                             formatter: '.formatter.bookStatusFormatter'
-                        }"/>
+                        }"
+                        text = "{ 
+                            path: 'stock',
+                            formatter: '.formatter.bookTextFormatter'
+                        }"
+                        />
 				</uxap:content>
 
 				<uxap:snappedContent>

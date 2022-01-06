@@ -143,8 +143,7 @@
                     required="{objectView>/required}" 
                     visible="{objectView>/edit}"
                     fieldGroupIds="editBook"
-                    change="onPriceChangeInputValueEvent"
-                    liveChange= "onPriceChangeInputValueEvent"/>
+                    change="onPriceChangeInputValueEvent"/>
 
                 
                 <Label 

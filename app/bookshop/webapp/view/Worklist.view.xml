@@ -231,9 +231,15 @@
                                         formatOptions: {showMeasure: false}
                                     }"
                                     unit="{currency}" />
-                                <Text
-                                    text="{stock}"
-                                    />
+                                <ObjectStatus
+                                    text="{
+                                        path: 'stock',
+                                        formatter: '.formatter.stockAmountFormatter'
+                                    }"
+                                    state="{
+                                        path: 'stock',
+                                        formatter: '.formatter.stockAmountStateFormatter'
+                                    }"/>
                                 <RatingIndicator 
                                     editable="false" 
                                     id="RI_default" 
@@ -241,6 +247,7 @@
                                     value="{rating}" 
                                     tooltip="Rating Tooltip"/>
                                 <StepInput
+                                    enabled="{= !!${stock}}"
                                     width="70%"
                                     value="{path: 'ID', formatter: '.formatter.bookInOrderAmountFormatter'}"
                                     min="0"
@@ -264,6 +271,7 @@
         <semantic:footerCustomActions>
             <Button 
                 icon="sap-icon://create-form"
+                id="openCreateBookDialogButton"
                 text="{i18n>createBookButton}"
                 press="onOpenCreateBookDialogButtonPress"/>
 		</semantic:footerCustomActions>

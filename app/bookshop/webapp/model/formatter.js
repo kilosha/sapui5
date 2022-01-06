@@ -53,18 +53,34 @@ sap.ui.define([
 
         bookStatusFormatter: function (iBookInStockAmount) {
             const i18nModel = this.getResourceBundle();
-            const oControl = this.byId("bookAmountIndicator");
 
             if (iBookInStockAmount === 0) {
-                oControl.setText(i18nModel.getText("bookOutOfStock"));
                 return i18nModel.getText("warning");
             } else if (iBookInStockAmount <= 5 && iBookInStockAmount !== null) {
-                oControl.setText(i18nModel.getText("bookSoonBeOver"));
                 return i18nModel.getText("information");
             }  
            
-            oControl.setText(i18nModel.getText("bookInStock"));
             return i18nModel.getText("success");
+        },
+
+        bookTextFormatter: function (iBookInStockAmount) {
+            const i18nModel = this.getResourceBundle();
+
+            if (iBookInStockAmount === 0) {
+                return i18nModel.getText("bookOutOfStock");
+            } else if (iBookInStockAmount <= 5 && iBookInStockAmount !== null) {
+                return i18nModel.getText("bookSoonBeOver");
+            }  
+           
+            return i18nModel.getText("bookInStock");
+        },
+
+        stockAmountFormatter: function (iStock) {
+            return iStock? iStock : this.getResourceBundle().getText("bookOutOfStock");
+        },
+
+        stockAmountStateFormatter: function (iStock) {
+            return iStock? "None" : "Error";
         }
 	};
 });
