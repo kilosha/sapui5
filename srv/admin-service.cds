@@ -5,6 +5,5 @@ service AdminService  {
     entity Orders as projection on my.Orders;
     entity Genres as projection on my.Genres;
     entity Orders_items as projection on my.Orders.items;
-
 }
 

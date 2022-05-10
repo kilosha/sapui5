@@ -1,0 +1,21 @@
+[
+    {
+            "up__ID": "55f97a35-0538-43ed-88b6-2ff60d828aa6",
+            "book_ID": "9aadef90-b5e8-4f5a-8634-9836a1a1e828",
+            "amount": 1,
+            "up_": {
+            "__deferred": {
+            "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Orders_items(up__ID=guid'55f97a35-0538-43ed-88b6-2ff60d828aa6',book_ID=guid'9aadef90-b5e8-4f5a-8634-9836a1a1e828')/up_"
+            }
+            },
+            "book": {
+            "__deferred": {
+            "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Orders_items(up__ID=guid'55f97a35-0538-43ed-88b6-2ff60d828aa6',book_ID=guid'9aadef90-b5e8-4f5a-8634-9836a1a1e828')/book"
+            }
+            },
+            "__metadata": {
+            "type": "AdminService.Orders_items",
+            "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Orders_items(up__ID=guid'55f97a35-0538-43ed-88b6-2ff60d828aa6',book_ID=guid'9aadef90-b5e8-4f5a-8634-9836a1a1e828')"
+            }
+            }
+]

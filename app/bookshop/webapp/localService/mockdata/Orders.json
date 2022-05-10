@@ -1,0 +1,22 @@
+[
+    {
+        "ID": "55f97a35-0538-43ed-88b6-2ff60d828aa6",
+        "deliveryDate": "/Date(1641859200000)/",
+        "customerName": "Harry",
+        "phoneNumber": "+375448197674",
+        "customerCity": "Minsk",
+        "paymentMethod": "CreditCard",
+        "totalCost": "17",
+        "currency": "USD",
+        "customerAddress": "Lenina str., 23, ap. 5",
+        "items": {
+        "__deferred": {
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Orders(guid'55f97a35-0538-43ed-88b6-2ff60d828aa6')/items"
+        }
+        },
+        "__metadata": {
+        "type": "AdminService.Orders",
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Orders(guid'55f97a35-0538-43ed-88b6-2ff60d828aa6')"
+        }
+        }
+]

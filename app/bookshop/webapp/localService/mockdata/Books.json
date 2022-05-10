@@ -1,0 +1,63 @@
+[ 
+    {
+        "ID": "9aadef90-b5e8-4f5a-8634-9836a1a1e828",
+        "title": "Harry Potter and the Sorcerer's Stone",
+        "descr": "A dazzling new edition of J.K. Rowlings Harry Potter and the Sorcerers Stone, fully illustrated in brilliant color and featuring exclusive interactive paper craft elements, including a foldout Hogwarts letter an",
+        "author_ID": "fc139ad5-9841-4bda-9965-ae1676488795",
+        "genre_title": "Fantasy",
+        "stock": 3,
+        "price": "17",
+        "currency": "USD",
+        "rating": 5,
+        "author": {
+        "__deferred": {
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Books(guid'9aadef90-b5e8-4f5a-8634-9836a1a1e828')/author"
+        }
+        },
+        "genre": {
+        "__deferred": {
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Books(guid'9aadef90-b5e8-4f5a-8634-9836a1a1e828')/genre"
+        }
+        },
+        "orders": {
+        "__deferred": {
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Books(guid'9aadef90-b5e8-4f5a-8634-9836a1a1e828')/orders"
+        }
+        },
+        "__metadata": {
+        "type": "AdminService.Books",
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Books(guid'9aadef90-b5e8-4f5a-8634-9836a1a1e828')"
+        }
+    },
+
+    {
+        "ID": "521e1ce5-9118-4576-ba50-45785da5a909",
+        "title": "Three Comrades",
+        "descr": "The year is 1928. On the outskirts of a large German city, three young men are earning a thin and precarious living. Fully armed young storm troopers swagger in the streets. Restlessness, poverty, and violence are everywhere. For these three, friendship is the only refuge from the chaos around them.",
+        "author_ID": "9e2da112-de82-43c7-aee6-2550995c931e",
+        "genre_title": "Novel",
+        "stock": 13,
+        "price": "16.56",
+        "currency": "USD",
+        "rating": 5,
+        "author": {
+        "__deferred": {
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Books(guid'521e1ce5-9118-4576-ba50-45785da5a909')/author"
+        }
+        },
+        "genre": {
+        "__deferred": {
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Books(guid'521e1ce5-9118-4576-ba50-45785da5a909')/genre"
+        }
+        },
+        "orders": {
+        "__deferred": {
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Books(guid'521e1ce5-9118-4576-ba50-45785da5a909')/orders"
+        }
+        },
+        "__metadata": {
+        "type": "AdminService.Books",
+        "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Books(guid'521e1ce5-9118-4576-ba50-45785da5a909')"
+        }
+    }
+]

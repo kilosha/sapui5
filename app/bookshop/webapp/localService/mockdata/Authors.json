@@ -1,0 +1,33 @@
+[
+    {
+        "ID": "9e2da112-de82-43c7-aee6-2550995c931e",
+        "name": "Erich Maria Remarque",
+        "dateOfBirth": "/Date(-2257200000000)/",
+        "countryOfBirth": "Germany",
+        "books": {
+            "__deferred": {
+                "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Authors(guid'9e2da112-de82-43c7-aee6-2550995c931e')/books"
+            }
+        },
+        "__metadata": {
+            "type": "AdminService.Authors",
+            "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Authors(guid'9e2da112-de82-43c7-aee6-2550995c931e')"
+        }
+    },
+
+    {
+        "ID": "fc139ad5-9841-4bda-9965-ae1676488795",
+        "name": "Joanne Rowling",
+        "dateOfBirth": "/Date(-139536000000)/",
+        "countryOfBirth": "United Kingdom",
+        "books": {
+            "__deferred": {
+                "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Authors(guid'fc139ad5-9841-4bda-9965-ae1676488795')/books"
+            }
+        },
+        "__metadata": {
+            "type": "AdminService.Authors",
+            "uri": "https://workspaces-ws-5rgsc-app2.us10.trial.applicationstudio.cloud.sap/v2/admin/Authors(guid'fc139ad5-9841-4bda-9965-ae1676488795')"
+        }
+    }
+]

@@ -204,6 +204,7 @@ sap.ui.define([
             const oFormModel = this.getModel();
             const oCreateAuthorDialog = oEvent.getSource().getParent();
             const bIsValid = this.onValidateCreateAuthorFieldGroup();
+            
             if (bIsValid) {
                 oFormModel.submitChanges(
                     {
@@ -211,6 +212,7 @@ sap.ui.define([
                     }
                 );
                 oCreateAuthorDialog.close();
+                console.log(oFormModel);
             } else {
                 MessageToast.show(this.getResourceBundle().getText('fillRequiredFieldsMessageToast'));
             }

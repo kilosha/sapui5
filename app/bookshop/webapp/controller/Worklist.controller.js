@@ -215,7 +215,10 @@ sap.ui.define([
             //create an entry of the Books collection with the specified properties and values
             
 			const oContext = oModel.createEntry("/Books", {
-                properties: { genre_title: Constants.GENRE}
+                properties: { 
+                    genre_title: Constants.GENRE,
+                    currency: Constants.CURRENCY
+                }
             });
 
             if (!this.pCreateBookDialog) {

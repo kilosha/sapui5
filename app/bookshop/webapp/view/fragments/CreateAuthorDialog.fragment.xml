@@ -14,7 +14,8 @@
 			emptySpanL="0"
 			emptySpanM="0"
 			columnsL="1"
-			columnsM="1">
+			columnsM="1"
+            id="createAuthorDialog">
 			<f:content>
 				<Label 
 					text="{i18n>createAuthorNameInput}" 
@@ -68,7 +69,8 @@
 		</f:SimpleForm>
 		<buttons>
 			<Button 
-				text="{i18n>submitCreateAuthorButton}" 
+				text="{i18n>submitCreateAuthorButton}"
+                id="submitCreateAuthorButton" 
 				press="onSubmitCreateAuthorButtonPress" />
             <Button 
 				text="{i18n>cancelCreateAuthorDialogButton}" 

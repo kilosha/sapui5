@@ -1,0 +1,151 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+<edmx:Reference xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+<edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+</edmx:Reference>
+<edmx:DataServices m:DataServiceVersion="2.0">
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="AdminService">
+<EntityContainer Name="EntityContainer" m:IsDefaultEntityContainer="true">
+<EntitySet Name="Books" EntityType="AdminService.Books"/>
+<EntitySet Name="Authors" EntityType="AdminService.Authors"/>
+<EntitySet Name="Orders" EntityType="AdminService.Orders"/>
+<EntitySet Name="Genres" EntityType="AdminService.Genres"/>
+<EntitySet Name="Orders_items" EntityType="AdminService.Orders_items"/>
+<AssociationSet Name="Books_author" Association="AdminService.Books_author">
+<End Role="Books" EntitySet="Books"/>
+<End Role="Authors" EntitySet="Authors"/>
+</AssociationSet>
+<AssociationSet Name="Books_genre" Association="AdminService.Books_genre">
+<End Role="Books" EntitySet="Books"/>
+<End Role="Genres" EntitySet="Genres"/>
+</AssociationSet>
+<AssociationSet Name="Orders_items_up_" Association="AdminService.Orders_items_up_">
+<End Role="Orders_items" EntitySet="Orders_items"/>
+<End Role="Orders" EntitySet="Orders"/>
+</AssociationSet>
+<AssociationSet Name="Orders_items_book" Association="AdminService.Orders_items_book">
+<End Role="Orders_items" EntitySet="Orders_items"/>
+<End Role="Books" EntitySet="Books"/>
+</AssociationSet>
+</EntityContainer>
+<EntityType Name="Books">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+<Property Name="title" Type="Edm.String"/>
+<Property Name="descr" Type="Edm.String"/>
+<NavigationProperty Name="author" Relationship="AdminService.Books_author" FromRole="Books" ToRole="Authors"/>
+<Property Name="author_ID" Type="Edm.Guid"/>
+<NavigationProperty Name="genre" Relationship="AdminService.Books_genre" FromRole="Books" ToRole="Genres"/>
+<Property Name="genre_title" Type="Edm.String"/>
+<Property Name="stock" Type="Edm.Int32"/>
+<Property Name="price" Type="Edm.Decimal" Scale="2" Precision="9"/>
+<Property Name="currency" Type="Edm.String"/>
+<NavigationProperty Name="orders" Relationship="AdminService.Orders_items_book" FromRole="Books" ToRole="Orders_items"/>
+<Property Name="rating" Type="Edm.Int32"/>
+</EntityType>
+<EntityType Name="Authors">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+<Property Name="name" Type="Edm.String" MaxLength="20"/>
+<Property Name="dateOfBirth" Type="Edm.DateTime" sap:display-format="Date"/>
+<Property Name="countryOfBirth" Type="Edm.String"/>
+<NavigationProperty Name="books" Relationship="AdminService.Books_author" FromRole="Authors" ToRole="Books"/>
+</EntityType>
+<EntityType Name="Orders">
+<Key>
+<PropertyRef Name="ID"/>
+</Key>
+<Property Name="ID" Type="Edm.Guid" Nullable="false"/>
+<Property Name="deliveryDate" Type="Edm.DateTime" sap:display-format="Date"/>
+<Property Name="customerName" Type="Edm.String"/>
+<Property Name="phoneNumber" Type="Edm.String"/>
+<NavigationProperty Name="items" Relationship="AdminService.Orders_items_up_" FromRole="Orders" ToRole="Orders_items"/>
+<Property Name="customerCity" Type="Edm.String"/>
+<Property Name="paymentMethod" Type="Edm.String"/>
+<Property Name="totalCost" Type="Edm.Decimal" Scale="2" Precision="9"/>
+<Property Name="currency" Type="Edm.String"/>
+<Property Name="customerAddress" Type="Edm.String"/>
+</EntityType>
+<EntityType Name="Genres">
+<Key>
+<PropertyRef Name="title"/>
+</Key>
+<Property Name="title" Type="Edm.String" Nullable="false"/>
+<NavigationProperty Name="books" Relationship="AdminService.Books_genre" FromRole="Genres" ToRole="Books"/>
+</EntityType>
+<EntityType Name="Orders_items">
+<Key>
+<PropertyRef Name="up__ID"/>
+<PropertyRef Name="book_ID"/>
+</Key>
+<NavigationProperty Name="up_" Relationship="AdminService.Orders_items_up_" FromRole="Orders_items" ToRole="Orders"/>
+<Property Name="up__ID" Type="Edm.Guid" Nullable="false"/>
+<NavigationProperty Name="book" Relationship="AdminService.Orders_items_book" FromRole="Orders_items" ToRole="Books"/>
+<Property Name="book_ID" Type="Edm.Guid" Nullable="false"/>
+<Property Name="amount" Type="Edm.Int32"/>
+</EntityType>
+<Association Name="Books_author">
+<End Role="Books" Type="AdminService.Books" Multiplicity="*"/>
+<End Role="Authors" Type="AdminService.Authors" Multiplicity="0..1"/>
+<ReferentialConstraint>
+<Principal Role="Authors">
+<PropertyRef Name="ID"/>
+</Principal>
+<Dependent Role="Books">
+<PropertyRef Name="author_ID"/>
+</Dependent>
+</ReferentialConstraint>
+</Association>
+<Association Name="Books_genre">
+<End Role="Books" Type="AdminService.Books" Multiplicity="*"/>
+<End Role="Genres" Type="AdminService.Genres" Multiplicity="0..1"/>
+<ReferentialConstraint>
+<Principal Role="Genres">
+<PropertyRef Name="title"/>
+</Principal>
+<Dependent Role="Books">
+<PropertyRef Name="genre_title"/>
+</Dependent>
+</ReferentialConstraint>
+</Association>
+<Association Name="Orders_items_up_">
+<End Role="Orders_items" Type="AdminService.Orders_items" Multiplicity="*"/>
+<End Role="Orders" Type="AdminService.Orders" Multiplicity="1">
+<OnDelete Action="Cascade"/>
+</End>
+<ReferentialConstraint>
+<Principal Role="Orders">
+<PropertyRef Name="ID"/>
+</Principal>
+<Dependent Role="Orders_items">
+<PropertyRef Name="up__ID"/>
+</Dependent>
+</ReferentialConstraint>
+</Association>
+<Association Name="Orders_items_book">
+<End Role="Orders_items" Type="AdminService.Orders_items" Multiplicity="*"/>
+<End Role="Books" Type="AdminService.Books" Multiplicity="0..1"/>
+<ReferentialConstraint>
+<Principal Role="Books">
+<PropertyRef Name="ID"/>
+</Principal>
+<Dependent Role="Orders_items">
+<PropertyRef Name="book_ID"/>
+</Dependent>
+</ReferentialConstraint>
+</Association>
+<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="AdminService.Authors/dateOfBirth">
+<Annotation Term="Common.Label" String="Date of birth"/>
+</Annotations>
+<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="AdminService.Authors/countryOfBirth">
+<Annotation Term="Common.Label" String="Country of birth"/>
+</Annotations>
+<Annotations xmlns="http://docs.oasis-open.org/odata/ns/edm" Target="AdminService.Orders/deliveryDate">
+<Annotation Term="Common.Label" String="Delivery date"/>
+</Annotations>
+</Schema>
+</edmx:DataServices>
+</edmx:Edmx>

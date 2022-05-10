@@ -12,6 +12,7 @@ entity Books: cuid {
     currency: String default 'USD';
     orders : Association to many Orders.items on orders.book = $self;
     rating: Integer;
+    createdBy: String(255) @cds.on.insert : $user;
 }
 
 entity Authors : cuid {

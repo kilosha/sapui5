@@ -34,10 +34,29 @@ sap.ui.define([
 	});
 
 
-    QUnit.module("Price State");
+    QUnit.module("Sort type formatter");
 
-    // QUnit.test  
+    function sortTypeFormatterValueTestCase(assert, sValue, sExpectedSortType) {
+		// Act
+		const sSortType = formatter.sortTypeFormatter(sValue);
 
-    // asset
+		// Assert
+		assert.strictEqual(sSortType, sExpectedSortType, "Function works correct");
+	}
 
+    QUnit.test("Should return 'sort'", function (assert) {
+		sortTypeFormatterValueTestCase.call(this, assert, "", "sort");
+	});
+
+    QUnit.test("Should return 'sort-ascending'", function (assert) {
+		sortTypeFormatterValueTestCase.call(this, assert, "ASC", "sort-ascending");
+	});
+
+    QUnit.test("Should return 'sort-descending'", function (assert) {
+		sortTypeFormatterValueTestCase.call(this, assert, "DESC", "sort-descending");
+	});
+
+    QUnit.test("Should return 'sort'", function (assert) {
+		sortTypeFormatterValueTestCase.call(this, assert, "test", "sort");
+	});
 });

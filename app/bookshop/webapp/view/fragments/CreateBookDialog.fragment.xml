@@ -14,7 +14,8 @@
 			emptySpanL="0"
 			emptySpanM="0"
 			columnsL="1"
-            columnsM="1">
+            columnsM="1"
+            id="BookDialog">
 			<f:content>
 				<Label 
 					text="{i18n>createBookTitleInput}" 
@@ -40,7 +41,7 @@
 					labelFor="book-author"/>
                 <ActionSelect
                     id="book-author"
-                    buttons="button1"
+                    buttons="addNewAuthorButton"
                     required="true"
                     items="{
                         path: '/Authors',
@@ -50,7 +51,7 @@
                         <core:Item key="{ID}" text="{name}" />
                     </items>
                     <dependents>
-                        <Button id="button1" text="{i18n>addNewAuthorButtonPress}" press="onAddNewAuthorButtonPress" />
+                        <Button id="addNewAuthorButton" text="{i18n>addNewAuthorButtonPress}" press="onAddNewAuthorButtonPress" />
                     </dependents>
 		        </ActionSelect>    
 
@@ -152,7 +153,8 @@
 		<buttons>
 			<Button 
 				text="{i18n>submitCreateBookButton}" 
-				press="onSubmitCreateBookButtonPress" />
+				press="onSubmitCreateBookButtonPress"
+                id="submitBookCreationButton" />
             <Button 
 				text="{i18n>cancelCreateBookDialogButton}" 
 				press="onCancelCreateDialogButtonPress" />

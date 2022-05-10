@@ -47,7 +47,8 @@ annotate service.Books with @(
                 $Type : 'UI.DataField',
                 Value : stock,
                 ![@UI.Importance] : #High  ,
-                ![@HTML5.CssDefaults] : {width : '8rem'}
+                ![@HTML5.CssDefaults] : {width : '8rem'},
+                Criticality: stock
             },
             {
                 $Type : 'UI.DataFieldForAnnotation',
